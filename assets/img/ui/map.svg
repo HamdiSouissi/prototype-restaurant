@@ -1,0 +1,101 @@
+<svg class="map__svg" viewBox="0 0 800 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Stylised map of the historic centre of Parma showing the restaurant near Piazza Duomo">
+  <defs>
+    <radialGradient id="map-vignette" cx="58%" cy="44%" r="72%">
+      <stop offset="0.45" stop-color="#0F0F10" stop-opacity="0"/>
+      <stop offset="1" stop-color="#0F0F10" stop-opacity="0.92"/>
+    </radialGradient>
+    <radialGradient id="map-halo" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#C9A96E" stop-opacity="0.26"/>
+      <stop offset="1" stop-color="#C9A96E" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="map-trees" width="16" height="16" patternUnits="userSpaceOnUse">
+      <circle cx="4" cy="4" r="1.5" fill="#22301f"/>
+      <circle cx="12" cy="11" r="1.2" fill="#1e2a1c"/>
+    </pattern>
+    <pattern id="map-dots" width="20" height="20" patternUnits="userSpaceOnUse">
+      <circle cx="1" cy="1" r="0.7" fill="#ffffff" fill-opacity="0.045"/>
+    </pattern>
+  </defs>
+
+  <!-- Ground -->
+  <rect width="800" height="800" fill="#141415"/>
+  <rect width="800" height="800" fill="url(#map-dots)"/>
+
+  <!-- Parco Ducale and gardens -->
+  <path d="M18 132h132q14 0 14 14v196q0 14-14 14H18z" fill="#121913"/>
+  <path d="M18 132h132q14 0 14 14v196q0 14-14 14H18z" fill="url(#map-trees)"/>
+  <path d="M40 244h104M92 150v190" stroke="#1b261c" stroke-width="3" fill="none"/>
+  <circle cx="92" cy="244" r="12" fill="#141c15" stroke="#1f2b20" stroke-width="2"/>
+  <path d="M612 560h96q10 0 10 10v70q0 10-10 10h-96z" fill="#121913"/>
+  <path d="M612 560h96q10 0 10 10v70q0 10-10 10h-96z" fill="url(#map-trees)"/>
+
+  <!-- Torrente Parma -->
+  <path d="M214-20C188 140 250 262 222 400S178 642 206 820" fill="none" stroke="#0e161b" stroke-width="62" stroke-linecap="round"/>
+  <path d="M214-20C188 140 250 262 222 400S178 642 206 820" fill="none" stroke="#17242c" stroke-width="64" stroke-linecap="round" stroke-opacity="0.55"/>
+  <path d="M214-20C188 140 250 262 222 400S178 642 206 820" fill="none" stroke="#101a20" stroke-width="56" stroke-linecap="round"/>
+  <path d="M214-20C188 140 250 262 222 400S178 642 206 820" fill="none" stroke="#3a5566" stroke-width="1" stroke-dasharray="3 14" stroke-linecap="round"/>
+
+  <!-- Secondary streets -->
+  <g fill="none" stroke="#29292c" stroke-width="2.4" stroke-linecap="round">
+    <path d="M262 118l500-10M258 168l300-6M300 214l470-12M362 258l180-4M650 252l130-4M270 304l120-3M450 300l90-2M640 306l140-4M262 350l130-3M450 346l330-9M258 452l150-2M448 448l330-10M256 500l520-12M252 552l350-8M254 604l340-8M256 660l500-12M260 712l480-10"/>
+    <path d="M300 118l-6 290M346 300l-4 104M364 60l-4 140M480 106l-6 640M522 300l-2 96M522 440l-6 280M566 110l-2 130M566 318l-8 420M612 106l-2 136M624 318l-8 236M664 104l-10 520M706 104l-10 450M748 100l-10 640M300 452l-6 262M346 448l-6 268M388 452l-4 264"/>
+    <path d="M40 420l120-6M36 480l128-8M34 540l130-8M40 600l124-8M38 664l130-8M84 392l-8 340M132 390l-8 340"/>
+  </g>
+
+  <!-- Main streets -->
+  <g fill="none" stroke="#38383d" stroke-linecap="round">
+    <path d="M250 62H700q60 0 60 60V700q0 58-60 58H250" stroke-width="8" stroke-opacity="0.8"/>
+    <path d="M-20 414l250-12 200-3 380-12" stroke-width="7"/>
+    <path d="M432-20l-8 420-10 420" stroke-width="7"/>
+    <path d="M-20 252h180M250 250h112" stroke-width="5"/>
+    <path d="M-20 524l190-6M240 518l184-4" stroke-width="5"/>
+    <path d="M-20 648l186-6M236 640l188-4" stroke-width="5"/>
+  </g>
+
+  <!-- Landmarks -->
+  <g fill="#202023" stroke="#3a3a40" stroke-width="1.2">
+    <path d="M268 190h92v100h-34v-34h-28v34h-30z"/>
+    <rect x="300" y="306" width="52" height="34" rx="2"/>
+    <rect x="396" y="380" width="54" height="42" rx="3" fill="#27272b"/>
+    <rect x="388" y="20" width="96" height="26" rx="3"/>
+  </g>
+  <!-- Piazza Duomo: cathedral and baptistery -->
+  <g fill="#211f1b" stroke="#C9A96E" stroke-opacity="0.38" stroke-width="1.1">
+    <rect x="556" y="246" width="80" height="64" rx="3" fill="#1b1a18" stroke-opacity="0.16"/>
+    <path d="M588 254h18v12h14v14h-14v22h-18v-22h-12v-14h12z"/>
+    <path d="M566 286l6-6h9l6 6v9l-6 6h-9l-6-6z"/>
+  </g>
+
+  <!-- Labels -->
+  <g class="map__labels" fill="#8a857b" font-size="9" letter-spacing="2.4" font-weight="600">
+    <text x="92" y="118" text-anchor="middle">PARCO DUCALE</text>
+    <text x="100" y="380" text-anchor="middle" fill="#6f6b63">OLTRETORRENTE</text>
+    <text x="314" y="182" text-anchor="middle">PILOTTA</text>
+    <text x="326" y="356" text-anchor="middle" fill="#6f6b63">TEATRO REGIO</text>
+    <text x="423" y="442" text-anchor="middle">P. GARIBALDI</text>
+    <text x="596" y="238" text-anchor="middle" fill="#a8946b">PIAZZA DUOMO</text>
+    <text x="436" y="14" text-anchor="middle" fill="#6f6b63">STAZIONE</text>
+    <text x="664" y="676" text-anchor="middle" fill="#6f6b63">ORTO BOTANICO</text>
+    <text transform="translate(206 600) rotate(-84)" text-anchor="middle" fill="#4f6e80" letter-spacing="5">TORRENTE PARMA</text>
+    <text transform="translate(640 381) rotate(-1.6)" text-anchor="middle" fill="#6f6b63">STRADA DELLA REPUBBLICA</text>
+  </g>
+
+  <!-- Start of the walk (Piazza Garibaldi) and glow under the restaurant. The route, the walker
+       and the pin move: they are drawn in a separate layer, see the contact section of index.php -->
+  <circle cx="423" cy="400" r="4.2" fill="#141415" stroke="#C9A96E" stroke-width="1.6"/>
+  <circle cx="590" cy="343" r="78" fill="url(#map-halo)"/>
+
+  <!-- Compass and scale -->
+  <g transform="translate(724 96)" fill="none" stroke="#5c5850" stroke-width="1">
+    <circle r="20"/>
+    <path d="M0-13l4.5 13L0 13l-4.5-13z" fill="#1d1d20"/>
+    <path d="M0-13l4.5 13h-9z" fill="#C9A96E" stroke="none"/>
+    <text y="-26" text-anchor="middle" fill="#8b867c" stroke="none" font-size="9" font-weight="700" letter-spacing="1">N</text>
+  </g>
+  <g transform="translate(44 752)" fill="none" stroke="#5c5850" stroke-width="1">
+    <path d="M0-4v4h70v-4"/>
+    <text x="35" y="-9" text-anchor="middle" fill="#77736b" stroke="none" font-size="8.5" font-weight="600" letter-spacing="1.6">200 M</text>
+  </g>
+
+  <rect width="800" height="800" fill="url(#map-vignette)" pointer-events="none"/>
+</svg>
