@@ -2,6 +2,7 @@
 
 A premium, fully animated one-page website for a (fictional) fine-dining Italian restaurant.
 Native **PHP + HTML5 + CSS3 + vanilla JavaScript** — no framework, no database, no build step.
+The whole interface is written in **Italian**; this documentation and the code comments are in English.
 
 ![Aurea on desktop and on a phone](docs/preview.jpg)
 
@@ -14,10 +15,10 @@ Native **PHP + HTML5 + CSS3 + vanilla JavaScript** — no framework, no database
 | --- | --- |
 | **Home** | Full-screen hero with an entrance choreography, depth on scroll and pointer, drifting embers. |
 | **About** | The story of the house, key figures that count up, the chef. |
-| **Menu** | 30 dishes in six categories (Starters, Pasta, Pizza, Main Courses, Desserts, Drinks) with animated filtering. Every dish can be added to the order. |
+| **Menu** | 30 dishes in six categories (Antipasti, Pasta, Pizza, Secondi, Dolci, Bevande) with animated filtering. Every dish can be added to the order. |
 | **Gallery** | Draggable carousel and a full-screen lightbox (keyboard and swipe). |
 | **Chef's Special** | The signature dish, with its own "add to order" button. |
-| **Reservation** | Form with name, phone, email, number of guests, date, time, seating (Indoor / Terrace) and comments. Live validation, time slots that follow the opening hours of the chosen day, and a confirmation dialog: *"Your reservation request has been received."* |
+| **Reservation** | Form with name, phone, email, number of guests, date, time, seating (indoor room or terrace: *Sala / Terrazza*) and comments. Live validation, time slots that follow the opening hours of the chosen day, and a confirmation dialog: *"La tua richiesta di prenotazione è stata ricevuta."* |
 | **Delivery** | Delivery / take-away ordering: order board, cart drawer, quantities, delivery fee, free-delivery threshold, checkout confirmation. |
 | **Reviews, FAQ** | Review carousel, accordion. |
 | **Contact** | Address, phone, email, opening hours with an "open now" badge, stylised animated map. |
@@ -89,7 +90,7 @@ Everything editable sits at the top of `index.php`, as plain PHP arrays:
 | `$nav` | Navigation links |
 | `$hours`, `$slots` | Opening hours and bookable times (they drive the timetable, the "open now" badge and the reservation form) |
 | `$order` | Delivery fee, free-delivery threshold, preparation times |
-| `$menu` | Categories and dishes (`id`, `name`, `desc`, `price`, `tag`) |
+| `$menu` | Categories (`label`, `motto`) and their dishes (`id`, `name`, `desc`, `price`, `tag`) |
 | `$gallery`, `$stats`, `$reviews`, `$faq` | Gallery, key figures, reviews, questions |
 
 **Images.** A dish uses the picture named after its `id`: `assets/img/menu/<id>-480.webp` and
@@ -102,6 +103,24 @@ another icon, add its `<symbol>` to the sprite.
 
 **Colours and type.** The design tokens (gold, backgrounds, type scale, spacing, radii, easings) are
 CSS custom properties at the top of `assets/css/base.css`.
+
+### Language
+
+The interface is in Italian (`<html lang="it">`), including what only a screen reader or a search engine
+meets: labels of the controls, image descriptions, page metadata, structured data.
+
+| Where | What |
+| --- | --- |
+| `index.php` | Everything printed in the page: the content arrays at the top, then the template |
+| `assets/js/modules/` | Messages written by the scripts: `reservation.js` (validation), `cart.js` (cart, checkout, notifications), `newsletter.js`, `contact.js` (opening badge), `gallery.js` (carousel announcements), `header.js` (navigation button) |
+| `assets/css/sections.css` | The "Oggi" marker of the timetable (generated content) |
+| `assets/img/ui/map.svg` | Description of the map |
+
+Numbers follow the Italian conventions — `24 €`, `4,50 €`, `4,9`, `1.280`, `Venerdì 13 novembre`. They
+are produced by `number()` and `price()` in `index.php`, by `price()`, `money()` and `decimal()` in
+`assets/js/modules/utils.js`, and dates by the `it-IT` locale. To translate the site, change the texts in
+the four places above and these formats; the values used by the code (category slugs, `Indoor` /
+`Terrace`, `data-*` attributes) stay as they are.
 
 ### Connecting a real back end
 

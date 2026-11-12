@@ -322,12 +322,14 @@ html.is-loading { overflow: hidden; }
 .nav { justify-self: center; }
 .nav__list {
     display: flex;
-    gap: clamp(1.25rem, 2.1vw, 2.5rem);
+    /* Seven labels on one line from 1221px up: the gap opens with the viewport */
+    gap: clamp(0.95rem, 4.2vw - 2.25rem, 2.5rem);
 }
 .nav__link {
     position: relative;
     display: inline-block;
     padding: 0.6rem 0;
+    white-space: nowrap;
     color: rgba(255, 255, 255, 0.82);
     font-size: 0.72rem;
     font-weight: 600;

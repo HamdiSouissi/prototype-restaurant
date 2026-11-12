@@ -28,11 +28,20 @@ export const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
 /** 7 → "07" */
 export const pad = (number) => String(number).padStart(2, '0');
 
-/** Amount for totals: 12.5 → "€12.50" */
-export const money = (amount) => `€${amount.toFixed(2)}`;
+/* Numbers are written the Italian way: decimal comma, euro sign after the amount. */
+const euro = new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' });
 
-/** Price as printed on the menu: 22 → "€22", 4.5 → "€4.50" */
-export const price = (amount) => (Number.isInteger(amount) ? `€${amount}` : money(amount));
+/** Amount for totals: 12.5 → "12,50 €" */
+export const money = (amount) => euro.format(amount);
+
+/** Price as printed on the menu: 22 → "22 €", 4.5 → "4,50 €" */
+export const price = (amount) => (Number.isInteger(amount) ? `${amount}\u00A0€` : money(amount));
+
+/** Decimal number: (4.9, 1) → "4,9" */
+export const decimal = (value, digits = 0) => value.toFixed(digits).replace('.', ',');
+
+/** "venerdì" → "Venerdì" */
+export const capitalise = (text) => text.charAt(0).toUpperCase() + text.slice(1);
 
 /** "19:30" → 1170 (minutes since midnight) */
 export const toMinutes = (time) => {

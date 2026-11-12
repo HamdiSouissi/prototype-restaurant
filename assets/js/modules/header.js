@@ -103,7 +103,7 @@ export function initHeader() {
         panel.setAttribute('aria-hidden', String(!open));
         behind.forEach((element) => element.toggleAttribute('inert', open));
         toggle.setAttribute('aria-expanded', String(open));
-        toggle.setAttribute('aria-label', open ? 'Close the menu' : 'Open the menu');
+        toggle.setAttribute('aria-label', open ? 'Chiudi la navigazione' : 'Apri la navigazione');
 
         if (open) lockScroll();
         else unlockScroll();

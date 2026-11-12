@@ -970,6 +970,10 @@
     .signature__media { max-width: 34rem; margin-inline: auto; width: 100%; }
     .signature__seal { top: -2rem; right: -0.5rem; width: 8rem; height: 8rem; }
 }
+/* Small phones: the long label ("Aggiungi all’ordine · 22 €") gets the whole width */
+@media (max-width: 400px) {
+    .signature__actions .btn { width: 100%; padding-inline: 1rem; letter-spacing: 0.1em; }
+}
 @media (max-width: 640px) {
     .specs { grid-template-columns: minmax(0, 1fr); gap: 1.1rem; }
     .quote { padding-left: 2.75rem; }
@@ -998,7 +1002,7 @@
 }
 .reservation__intro .title { margin-bottom: clamp(1.25rem, 3vw, 1.75rem); }
 
-/* Photograph that follows the seating choice (Indoor / Terrace) */
+/* Photograph that follows the seating choice (dining room / terrace) */
 .reservation__visual {
     margin-top: clamp(2rem, 4vw, 2.75rem);
     aspect-ratio: 16 / 11;
@@ -1611,8 +1615,9 @@
 }
 .hours__title { font-size: 1.65rem; }
 .hours__row {
-    display: flex;
-    justify-content: space-between;
+    /* The days keep one line as long as a single opening time fits beside them; the times wrap first */
+    display: grid;
+    grid-template-columns: auto minmax(min-content, 1fr);
     gap: 1.5rem;
     padding: 0.75rem 0;
     border-top: 1px solid var(--c-line);
@@ -1631,7 +1636,7 @@
 .hours__closed { color: #7C7A75; }
 .hours__row.is-today dt { color: var(--c-gold); }
 .hours__row.is-today dt::after {
-    content: 'Today';
+    content: 'Oggi';
     margin-left: 0.75rem;
     padding: 0.2rem 0.5rem;
     border: 1px solid rgba(var(--rgb-gold), 0.5);

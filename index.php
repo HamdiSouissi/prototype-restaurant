@@ -14,6 +14,7 @@
  *    4. TEMPLATE       → the page itself, one commented block per section
  *
  *  To adapt the site to another restaurant, parts 1 and 2 are all you need.
+ *  The interface is written in Italian; code and comments are in English.
  */
 
 declare(strict_types=1);
@@ -29,11 +30,11 @@ $site = [
     'descriptor'  => 'Ristorante',
     'city'        => 'Parma',
     'since'       => 1987,
-    'title'       => 'Aurea — Ristorante in Parma · Fine Italian dining',
-    'description' => 'A candlelit dining room beneath seventeenth-century vaults in the heart of Parma. Handmade pasta, Culatello di Zibello, a 240-label cellar. Reserve your table online.',
+    'title'       => 'Aurea — Ristorante a Parma · Alta cucina italiana',
+    'description' => 'Una sala a lume di candela sotto volte seicentesche, nel cuore di Parma. Pasta fatta a mano, Culatello di Zibello, una cantina di 240 etichette. Prenota il tuo tavolo online.',
     'street'      => 'Borgo dell’Aurora 12',
     'zip'         => '43121',
-    'country'     => 'Italy',
+    'country'     => 'Italia',
     'phone'       => '+39 0521 00 19 87',
     'email'       => 'ciao@aurea-parma.example',
     'maps_url'    => 'https://www.google.com/maps/dir/?api=1&destination=Piazza+Duomo%2C+Parma',
@@ -49,13 +50,13 @@ $site = [
 
 /** Main navigation — label => anchor */
 $nav = [
-    'Home'        => '#home',
-    'Menu'        => '#menu',
-    'Gallery'     => '#gallery',
-    'Reservation' => '#reservation',
-    'Delivery'    => '#delivery',
-    'About'       => '#about',
-    'Contact'     => '#contact',
+    'Home'         => '#home',
+    'Menù'         => '#menu',
+    'Galleria'     => '#gallery',
+    'Prenotazioni' => '#reservation',
+    'A domicilio'  => '#delivery',
+    'Chi siamo'    => '#about',
+    'Contatti'     => '#contact',
 ];
 
 /**
@@ -75,8 +76,8 @@ $hours = [
 
 /** Bookable arrival times, grouped by service */
 $slots = [
-    'Lunch'  => ['12:30', '13:00', '13:30', '14:00'],
-    'Dinner' => ['19:00', '19:30', '20:00', '20:30', '21:00', '21:30', '22:00'],
+    'Pranzo' => ['12:30', '13:00', '13:30', '14:00'],
+    'Cena'   => ['19:00', '19:30', '20:00', '20:30', '21:00', '21:30', '22:00'],
 ];
 
 /** Online-order settings (amounts in euros, times in minutes) */
@@ -93,120 +94,121 @@ $order = [
    ═════════════════════════════════════════════════════════════════════════════ */
 
 /**
- * Menu — one entry per category. Each dish: id (also its image name in
- * /assets/img/menu), name, description, price and an optional tag.
+ * Menu — one entry per category: label (tab), motto (the line shown beside the
+ * tabs) and dishes. Each dish: id (also its image name in /assets/img/menu),
+ * name, description, price and an optional tag.
  */
 $menu = [
     'starters' => [
-        'label' => 'Starters',
-        'it'    => 'Antipasti',
+        'label' => 'Antipasti',
+        'motto' => 'Per cominciare',
         'items' => [
-            ['id' => 'culatello',  'name' => 'Culatello di Zibello',          'price' => 24, 'tag' => 'Signature',  'desc' => 'Aged thirty months in the fog of the Bassa, served with warm torta fritta.'],
-            ['id' => 'parmigiano', 'name' => 'Parmigiano, three ages',        'price' => 18, 'tag' => 'Vegetarian', 'desc' => '24, 36 and 60 months, acacia honey, walnuts and traditional balsamic.'],
-            ['id' => 'battuta',    'name' => 'Battuta di Fassona',            'price' => 22, 'tag' => '',           'desc' => 'Hand-cut Piedmontese beef, cured yolk, Parmigiano shavings, olive oil.'],
-            ['id' => 'sformato',   'name' => 'Sformato di Parmigiano',        'price' => 19, 'tag' => 'Vegetarian', 'desc' => 'Warm Parmigiano flan, saffron fondue, shaved black truffle.'],
-            ['id' => 'prosciutto', 'name' => 'Prosciutto di Parma',           'price' => 20, 'tag' => '',           'desc' => 'Thirty months, sliced by hand to order, with late-summer figs.'],
-            ['id' => 'uovo',       'name' => 'Uovo morbido',                  'price' => 17, 'tag' => '',           'desc' => 'Slow-cooked farm egg, green asparagus, Parmigiano foam, crisp pancetta.'],
+            ['id' => 'culatello',  'name' => 'Culatello di Zibello',          'price' => 24, 'tag' => 'Piatto firma', 'desc' => 'Stagionato trenta mesi nelle nebbie della Bassa, servito con torta fritta calda.'],
+            ['id' => 'parmigiano', 'name' => 'Parmigiano, tre stagionature',  'price' => 18, 'tag' => 'Vegetariano',  'desc' => '24, 36 e 60 mesi, miele di acacia, noci e aceto balsamico tradizionale.'],
+            ['id' => 'battuta',    'name' => 'Battuta di Fassona',            'price' => 22, 'tag' => '',             'desc' => 'Fassona piemontese battuta al coltello, tuorlo marinato, scaglie di Parmigiano, olio extravergine.'],
+            ['id' => 'sformato',   'name' => 'Sformato di Parmigiano',        'price' => 19, 'tag' => 'Vegetariano',  'desc' => 'Sformato tiepido di Parmigiano, fonduta allo zafferano, lamelle di tartufo nero.'],
+            ['id' => 'prosciutto', 'name' => 'Prosciutto di Parma',           'price' => 20, 'tag' => '',             'desc' => 'Trenta mesi, tagliato a mano al momento, con fichi di fine estate.'],
+            ['id' => 'uovo',       'name' => 'Uovo morbido',                  'price' => 17, 'tag' => '',             'desc' => 'Uovo di cascina cotto a bassa temperatura, asparagi verdi, spuma di Parmigiano, pancetta croccante.'],
         ],
     ],
     'pasta' => [
         'label' => 'Pasta',
-        'it'    => 'Primi',
+        'motto' => 'Tirata a mano',
         'items' => [
-            ['id' => 'tortelli-erbetta', 'name' => 'Tortelli d’erbetta',     'price' => 22, 'tag' => 'Signature',  'desc' => 'Ricotta and chard parcels, melted mountain butter, 36-month Parmigiano.'],
-            ['id' => 'anolini',          'name' => 'Anolini in brodo',       'price' => 21, 'tag' => '',           'desc' => 'Filled with slow-braised beef and Parmigiano, in a clear capon broth.'],
-            ['id' => 'tortelli-zucca',   'name' => 'Tortelli di zucca',      'price' => 21, 'tag' => 'Vegetarian', 'desc' => 'Pumpkin, amaretti and mostarda, brown butter, crisp sage.'],
-            ['id' => 'tagliatelle-ragu', 'name' => 'Tagliatelle al ragù',    'price' => 20, 'tag' => '',           'desc' => 'Egg pasta rolled by hand, eight-hour ragù of beef and pork.'],
+            ['id' => 'tortelli-erbetta', 'name' => 'Tortelli d’erbetta',     'price' => 22, 'tag' => 'Piatto firma', 'desc' => 'Ripieno di ricotta ed erbette, burro fuso di montagna, Parmigiano 36 mesi.'],
+            ['id' => 'anolini',          'name' => 'Anolini in brodo',       'price' => 21, 'tag' => '',             'desc' => 'Ripieni di stracotto di manzo e Parmigiano, in brodo limpido di cappone.'],
+            ['id' => 'tortelli-zucca',   'name' => 'Tortelli di zucca',      'price' => 21, 'tag' => 'Vegetariano',  'desc' => 'Zucca, amaretti e mostarda, burro nocciola, salvia croccante.'],
+            ['id' => 'tagliatelle-ragu', 'name' => 'Tagliatelle al ragù',    'price' => 20, 'tag' => '',             'desc' => 'Sfoglia all’uovo tirata a mano, ragù di manzo e maiale cotto otto ore.'],
         ],
     ],
     'pizza' => [
         'label' => 'Pizza',
-        'it'    => 'Dal forno a legna',
+        'motto' => 'Dal forno a legna',
         'items' => [
-            ['id' => 'pizza-margherita', 'name' => 'Margherita',             'price' => 13, 'tag' => 'Vegetarian', 'desc' => 'San Marzano tomato, fior di latte, basil. Forty-eight-hour dough.'],
-            ['id' => 'pizza-bufala',     'name' => 'Bufala',                 'price' => 16, 'tag' => 'Vegetarian', 'desc' => 'Tomato, buffalo mozzarella added out of the oven, basil, Ligurian oil.'],
-            ['id' => 'pizza-crudo',      'name' => 'Parma',                  'price' => 18, 'tag' => 'Signature',  'desc' => 'Fior di latte, Prosciutto di Parma aged twenty-four months, basil.'],
-            ['id' => 'pizza-pomodoro',   'name' => 'Tre pomodori',           'price' => 14, 'tag' => 'Vegan',      'desc' => 'Datterino, San Marzano and sun-dried tomato, oregano, garlic oil.'],
-            ['id' => 'pizza-bresaola',   'name' => 'Bresaola e rucola',      'price' => 17, 'tag' => '',           'desc' => 'Bresaola, wild rocket, Parmigiano shavings, lemon oil.'],
+            ['id' => 'pizza-margherita', 'name' => 'Margherita',             'price' => 13, 'tag' => 'Vegetariano',  'desc' => 'Pomodoro San Marzano, fior di latte, basilico. Impasto a 48 ore di lievitazione.'],
+            ['id' => 'pizza-bufala',     'name' => 'Bufala',                 'price' => 16, 'tag' => 'Vegetariano',  'desc' => 'Pomodoro, mozzarella di bufala aggiunta a crudo, basilico, olio ligure.'],
+            ['id' => 'pizza-crudo',      'name' => 'Parma',                  'price' => 18, 'tag' => 'Piatto firma', 'desc' => 'Fior di latte, Prosciutto di Parma 24 mesi, basilico.'],
+            ['id' => 'pizza-pomodoro',   'name' => 'Tre pomodori',           'price' => 14, 'tag' => 'Vegano',       'desc' => 'Datterino, San Marzano e pomodoro secco, origano, olio all’aglio.'],
+            ['id' => 'pizza-bresaola',   'name' => 'Bresaola e rucola',      'price' => 17, 'tag' => '',             'desc' => 'Bresaola, rucola selvatica, scaglie di Parmigiano, olio al limone.'],
         ],
     ],
     'mains' => [
-        'label' => 'Main Courses',
-        'it'    => 'Secondi',
+        'label' => 'Secondi',
+        'motto' => 'Fuoco e pazienza',
         'items' => [
-            ['id' => 'rosa-di-parma', 'name' => 'Rosa di Parma',             'price' => 34, 'tag' => 'Signature',  'desc' => 'Beef fillet rolled with Prosciutto and Parmigiano, Lambrusco jus.'],
-            ['id' => 'filetto',       'name' => 'Filetto di manzo',          'price' => 36, 'tag' => '',           'desc' => 'Grilled beef fillet, green asparagus, potato fondant, roasting jus.'],
-            ['id' => 'guancia',       'name' => 'Guancia brasata',           'price' => 29, 'tag' => '',           'desc' => 'Veal cheek braised for twelve hours, soft stone-ground polenta.'],
-            ['id' => 'tagliata',      'name' => 'Tagliata di Fassona',       'price' => 32, 'tag' => '',           'desc' => 'Seared and sliced rare, bitter leaves, rosemary jus poured at the table.'],
-            ['id' => 'salmerino',     'name' => 'Salmerino alla brace',      'price' => 30, 'tag' => '',           'desc' => 'Ember-grilled Alpine char, purple potato, wild herbs.'],
+            ['id' => 'rosa-di-parma', 'name' => 'Rosa di Parma',             'price' => 34, 'tag' => 'Piatto firma', 'desc' => 'Filetto di manzo arrotolato con Prosciutto e Parmigiano, fondo al Lambrusco.'],
+            ['id' => 'filetto',       'name' => 'Filetto di manzo',          'price' => 36, 'tag' => '',             'desc' => 'Filetto di manzo alla griglia, asparagi verdi, patata fondente, fondo bruno.'],
+            ['id' => 'guancia',       'name' => 'Guancia brasata',           'price' => 29, 'tag' => '',             'desc' => 'Guancia di vitello brasata dodici ore, polenta morbida macinata a pietra.'],
+            ['id' => 'tagliata',      'name' => 'Tagliata di Fassona',       'price' => 32, 'tag' => '',             'desc' => 'Scottata e servita al sangue, insalate amare, fondo al rosmarino versato al tavolo.'],
+            ['id' => 'salmerino',     'name' => 'Salmerino alla brace',      'price' => 30, 'tag' => '',             'desc' => 'Salmerino alpino cotto sulla brace, patata viola, erbe spontanee.'],
         ],
     ],
     'desserts' => [
-        'label' => 'Desserts',
-        'it'    => 'Dolci',
+        'label' => 'Dolci',
+        'motto' => 'Per finire',
         'items' => [
-            ['id' => 'tiramisu',    'name' => 'Tiramisù della casa',         'price' => 11, 'tag' => 'Signature',  'desc' => 'Mascarpone cream, espresso-soaked savoiardi, bitter cocoa.'],
-            ['id' => 'panna-cotta', 'name' => 'Panna cotta',                 'price' => 10, 'tag' => '',           'desc' => 'Vanilla cream, sour-cherry compote, toasted almond crumble.'],
-            ['id' => 'semifreddo',  'name' => 'Semifreddo al torroncino',    'price' => 11, 'tag' => '',           'desc' => 'Nougat parfait, raspberry coulis, Bronte pistachio.'],
-            ['id' => 'affogato',    'name' => 'Affogato al caffè',           'price' => 9,  'tag' => '',           'desc' => 'Fior di latte gelato, a ristretto poured at the table.'],
+            ['id' => 'tiramisu',    'name' => 'Tiramisù della casa',         'price' => 11, 'tag' => 'Piatto firma', 'desc' => 'Crema al mascarpone, savoiardi bagnati nell’espresso, cacao amaro.'],
+            ['id' => 'panna-cotta', 'name' => 'Panna cotta',                 'price' => 10, 'tag' => '',             'desc' => 'Panna alla vaniglia, composta di amarene, crumble di mandorle tostate.'],
+            ['id' => 'semifreddo',  'name' => 'Semifreddo al torroncino',    'price' => 11, 'tag' => '',             'desc' => 'Semifreddo al torrone, coulis di lamponi, pistacchio di Bronte.'],
+            ['id' => 'affogato',    'name' => 'Affogato al caffè',           'price' => 9,  'tag' => '',             'desc' => 'Gelato fior di latte, caffè ristretto versato al tavolo.'],
         ],
     ],
     'drinks' => [
-        'label' => 'Drinks',
-        'it'    => 'Dalla cantina',
+        'label' => 'Bevande',
+        'motto' => 'Dalla cantina',
         'items' => [
-            ['id' => 'lambrusco',    'name' => 'Lambrusco di Sorbara',       'price' => 8,  'tag' => '',           'desc' => 'Dry, sparkling and ruby red. By the glass.'],
-            ['id' => 'malvasia',     'name' => 'Malvasia di Candia',         'price' => 9,  'tag' => '',           'desc' => 'Aromatic white from the Colli di Parma. By the glass.'],
-            ['id' => 'negroni',      'name' => 'Negroni',                    'price' => 12, 'tag' => 'Classic',    'desc' => 'Gin, bitter, red vermouth, orange peel.'],
-            ['id' => 'boulevardier', 'name' => 'Boulevardier',               'price' => 13, 'tag' => '',           'desc' => 'Bourbon, bitter and sweet vermouth, served up.'],
-            ['id' => 'spritz',       'name' => 'Spritz della casa',          'price' => 10, 'tag' => '',           'desc' => 'Bitter-orange aperitivo, Malvasia frizzante, soda.'],
-            ['id' => 'espresso',     'name' => 'Espresso',                   'price' => 3,  'tag' => '',           'desc' => 'House blend, roasted a few streets away.'],
+            ['id' => 'lambrusco',    'name' => 'Lambrusco di Sorbara',       'price' => 8,  'tag' => '',             'desc' => 'Secco, frizzante, rosso rubino. Al calice.'],
+            ['id' => 'malvasia',     'name' => 'Malvasia di Candia',         'price' => 9,  'tag' => '',             'desc' => 'Bianco aromatico dei Colli di Parma. Al calice.'],
+            ['id' => 'negroni',      'name' => 'Negroni',                    'price' => 12, 'tag' => 'Classico',     'desc' => 'Gin, bitter, vermouth rosso, scorza d’arancia.'],
+            ['id' => 'boulevardier', 'name' => 'Boulevardier',               'price' => 13, 'tag' => '',             'desc' => 'Bourbon, bitter e vermouth dolce, servito in coppa.'],
+            ['id' => 'spritz',       'name' => 'Spritz della casa',          'price' => 10, 'tag' => '',             'desc' => 'Aperitivo all’arancia amara, Malvasia frizzante, soda.'],
+            ['id' => 'espresso',     'name' => 'Espresso',                   'price' => 3,  'tag' => '',             'desc' => 'Miscela della casa, tostata a pochi passi da qui.'],
         ],
     ],
 ];
 
 /** Gallery — image id in /assets/img, caption, layout (wide = 3:2, tall = 4:5) */
 $gallery = [
-    ['img' => 'gallery/room',       'label' => 'Sala delle Volte',              'shape' => 'wide'],
-    ['img' => 'gallery/pass',       'label' => 'The last gesture, at the pass', 'shape' => 'tall'],
-    ['img' => 'gallery/long-table', 'label' => 'The long table',                'shape' => 'tall'],
-    ['img' => 'gallery/table',      'label' => 'Mise en place',                 'shape' => 'wide'],
-    ['img' => 'gallery/cellar',     'label' => 'The cellar · 240 labels',       'shape' => 'tall'],
-    ['img' => 'gallery/sfoglia',    'label' => 'Sfoglia, every morning',        'shape' => 'tall'],
-    ['img' => 'gallery/duomo',      'label' => 'Piazza Duomo, two minutes away','shape' => 'wide'],
-    ['img' => 'gallery/kitchen',    'label' => 'The kitchen, 7 pm',             'shape' => 'tall'],
-    ['img' => 'gallery/bar',        'label' => 'The bar',                       'shape' => 'wide'],
-    ['img' => 'gallery/wine',       'label' => 'Malvasia hour',                 'shape' => 'tall'],
+    ['img' => 'gallery/room',       'label' => 'Sala delle Volte',             'shape' => 'wide'],
+    ['img' => 'gallery/pass',       'label' => 'L’ultimo gesto, al pass',      'shape' => 'tall'],
+    ['img' => 'gallery/long-table', 'label' => 'La grande tavolata',           'shape' => 'tall'],
+    ['img' => 'gallery/table',      'label' => 'La tavola apparecchiata',      'shape' => 'wide'],
+    ['img' => 'gallery/cellar',     'label' => 'La cantina · 240 etichette',   'shape' => 'tall'],
+    ['img' => 'gallery/sfoglia',    'label' => 'La sfoglia, ogni mattina',     'shape' => 'tall'],
+    ['img' => 'gallery/duomo',      'label' => 'Piazza Duomo, a due minuti',   'shape' => 'wide'],
+    ['img' => 'gallery/kitchen',    'label' => 'La cucina, ore 19',            'shape' => 'tall'],
+    ['img' => 'gallery/bar',        'label' => 'Il bancone',                   'shape' => 'wide'],
+    ['img' => 'gallery/wine',       'label' => 'L’ora della Malvasia',         'shape' => 'tall'],
 ];
 
-/** Key figures shown under the story ("{years}" is computed from $site['since']) */
+/** Key figures shown under the story (the first one is computed from $site['since']) */
 $stats = [
-    ['value' => (int) date('Y') - $site['since'], 'suffix' => '',   'label' => 'Years of family service'],
-    ['value' => 240,                              'suffix' => '+',  'label' => 'Labels resting in the cellar'],
-    ['value' => 36,                               'suffix' => '',   'label' => 'Months of ageing for our Parmigiano'],
-    ['value' => 14,                               'suffix' => '',   'label' => 'Producers, all within thirty kilometres'],
+    ['value' => (int) date('Y') - $site['since'], 'suffix' => '',   'label' => 'Anni di gestione familiare'],
+    ['value' => 240,                              'suffix' => '+',  'label' => 'Etichette a riposo in cantina'],
+    ['value' => 36,                               'suffix' => '',   'label' => 'Mesi di stagionatura del nostro Parmigiano'],
+    ['value' => 14,                               'suffix' => '',   'label' => 'Produttori, tutti nel raggio di trenta chilometri'],
 ];
 
 /** Guest reviews — "dish" refers to a menu id (thumbnail shown on the card) */
 $reviews = [
-    ['name' => 'Giulia M.',       'from' => 'Milan',  'occasion' => 'Dinner for two',     'dish' => 'tortelli-erbetta', 'text' => 'The tortelli alone are worth the trip to Parma. And a service that reads the table without ever interrupting it.'],
-    ['name' => 'Thomas & Claire', 'from' => 'Lyon',   'occasion' => 'Anniversary',        'dish' => 'tiramisu',         'text' => 'We were looked after from the first glass of Malvasia to the last spoonful of tiramisù. Flawless, and never stiff.'],
-    ['name' => 'Hiroshi T.',      'from' => 'Tokyo',  'occasion' => 'Tasting menu',       'dish' => 'culatello',        'text' => 'A dining room lit by candles, a cellar full of surprises and a culatello I am still thinking about weeks later.'],
-    ['name' => 'Elena R.',        'from' => 'Parma',  'occasion' => 'Sunday lunch',       'dish' => 'anolini',          'text' => 'Rare to find a kitchen this precise that still cooks with so much heart. The anolini tasted like Sundays at my grandmother’s.'],
-    ['name' => 'Marco B.',        'from' => 'Parma',  'occasion' => 'Take away',          'dish' => 'pizza-crudo',      'text' => 'Ordered for a family lunch: everything arrived beautifully packed and still warm. Restaurant quality, at our own table.'],
-    ['name' => 'Sophie L.',       'from' => 'London', 'occasion' => 'Business dinner',    'dish' => 'rosa-di-parma',    'text' => 'From the welcome to the wine pairing, every detail felt considered. Easily one of the finest tables in Emilia.'],
+    ['name' => 'Giulia M.',       'from' => 'Milano', 'occasion' => 'Cena per due',          'dish' => 'tortelli-erbetta', 'text' => 'I tortelli da soli valgono il viaggio fino a Parma. E un servizio che sa leggere il tavolo senza mai interromperlo.'],
+    ['name' => 'Thomas & Claire', 'from' => 'Lione',  'occasion' => 'Anniversario',          'dish' => 'tiramisu',         'text' => 'Ci hanno coccolati dal primo calice di Malvasia all’ultimo cucchiaio di tiramisù. Impeccabile, senza mai essere ingessato.'],
+    ['name' => 'Hiroshi T.',      'from' => 'Tokyo',  'occasion' => 'Menù degustazione',     'dish' => 'culatello',        'text' => 'Una sala illuminata dalle candele, una cantina piena di sorprese e un culatello a cui penso ancora, settimane dopo.'],
+    ['name' => 'Elena R.',        'from' => 'Parma',  'occasion' => 'Pranzo della domenica', 'dish' => 'anolini',          'text' => 'È raro trovare una cucina così precisa che cucini ancora con tanto cuore. Gli anolini sapevano di domenica dalla nonna.'],
+    ['name' => 'Marco B.',        'from' => 'Parma',  'occasion' => 'A domicilio',           'dish' => 'pizza-crudo',      'text' => 'Ordinato per un pranzo in famiglia: è arrivato tutto confezionato con cura e ancora caldo. La qualità del ristorante, alla nostra tavola.'],
+    ['name' => 'Sophie L.',       'from' => 'Londra', 'occasion' => 'Cena di lavoro',        'dish' => 'rosa-di-parma',    'text' => 'Dall’accoglienza all’abbinamento dei vini, ogni dettaglio è pensato. Senza dubbio una delle migliori tavole dell’Emilia.'],
 ];
 
 /** Frequently asked questions */
 $faq = [
-    ['q' => 'Do I need a reservation?',                           'a' => 'We recommend booking, especially from Thursday to Sunday. A few seats at the bar are always kept for guests who simply walk in. Tables are held for fifteen minutes.'],
-    ['q' => 'Is there a dress code?',                             'a' => 'Smart casual. Come as you would to dinner at a friend’s beautiful home — jackets are welcome, never required.'],
-    ['q' => 'Can you accommodate allergies and dietary needs?',   'a' => 'Of course. Vegetarian and gluten-free alternatives are available for most dishes. Please mention any allergy when you reserve so the kitchen can prepare with care.'],
-    ['q' => 'Are children welcome?',                              'a' => 'Always. We have high chairs, a short menu of small portions and plenty of patience. Lunch service is the calmest moment for families.'],
-    ['q' => 'Where can I park?',                                  'a' => 'The restaurant sits inside the limited-traffic zone. The nearest car park is five minutes away on foot, and we are happy to book a taxi for your journey home.'],
-    ['q' => 'Do you host private dinners and events?',            'a' => 'Our vaulted cellar room seats up to eighteen guests around a single table, with bespoke menus and pairings. Call us and we will compose the evening with you.'],
-    ['q' => 'How do delivery and take-away work?',                'a' => 'Choose your dishes online, then pick delivery within five kilometres or collection at the restaurant. Orders are cooked to order and leave the kitchen in insulated boxes.'],
-    ['q' => 'What is your cancellation policy?',                  'a' => 'Plans change. You can cancel or modify a reservation free of charge up to twenty-four hours before your table.'],
+    ['q' => 'È necessario prenotare?',                   'a' => 'Consigliamo la prenotazione, soprattutto dal giovedì alla domenica. Qualche posto al bancone resta sempre libero per chi arriva senza preavviso. Il tavolo viene tenuto per quindici minuti.'],
+    ['q' => 'È richiesto un abbigliamento particolare?', 'a' => 'Elegante ma informale. Vieni come andresti a cena nella bella casa di un amico: la giacca è gradita, mai obbligatoria.'],
+    ['q' => 'Gestite allergie ed esigenze alimentari?',  'a' => 'Certamente. Per la maggior parte dei piatti sono disponibili alternative vegetariane e senza glutine. Segnala eventuali allergie al momento della prenotazione, così la cucina potrà prepararsi con cura.'],
+    ['q' => 'I bambini sono i benvenuti?',               'a' => 'Sempre. Abbiamo seggioloni, un piccolo menù di mezze porzioni e tanta pazienza. Il pranzo è il momento più tranquillo per le famiglie.'],
+    ['q' => 'Dove posso parcheggiare?',                  'a' => 'Il ristorante si trova all’interno della ZTL. Il parcheggio più vicino è a cinque minuti a piedi e, per il rientro, prenotiamo volentieri un taxi.'],
+    ['q' => 'Organizzate cene private ed eventi?',       'a' => 'La nostra sala a volta in cantina accoglie fino a diciotto ospiti attorno a un’unica tavola, con menù e abbinamenti su misura. Chiamaci: costruiremo la serata insieme.'],
+    ['q' => 'Come funzionano consegna e asporto?',       'a' => 'Scegli i piatti online, poi decidi tra la consegna entro cinque chilometri e il ritiro al ristorante. Ogni ordine è cucinato al momento e lascia la cucina in contenitori termici.'],
+    ['q' => 'Qual è la politica di cancellazione?',      'a' => 'I programmi cambiano. Puoi annullare o modificare la prenotazione gratuitamente fino a ventiquattro ore prima.'],
 ];
 
 
@@ -313,10 +315,17 @@ function seal(string $id, string $text): string
          . '</svg></span>';
 }
 
-/** Formats a price for display on the menu (no decimals when round). */
+/** Formats a number the Italian way: 1280 → "1.280", 4.9 → "4,9". */
+function number($value, int $decimals = 0): string
+{
+    return number_format((float) $value, $decimals, ',', '.');
+}
+
+/** Formats a price the Italian way, without decimals when round: "24 €", "4,50 €". */
 function price(float $amount): string
 {
-    return '€' . (floor($amount) == $amount ? number_format($amount, 0) : number_format($amount, 2));
+    // The space before the symbol is non-breaking: a price is never cut in two
+    return number($amount, floor($amount) == $amount ? 0 : 2) . "\u{00A0}€";
 }
 
 /** Initials of a guest name, for the avatar medallion. */
@@ -329,11 +338,11 @@ function initials(string $name): string
 
 /**
  * Groups consecutive days that share the same services into timetable rows,
- * e.g. Tuesday → Thursday · 19:00 – 23:00.
+ * e.g. Martedì → Giovedì · 19:00 – 23:00.
  */
 function opening_rows(array $hours): array
 {
-    $names = [1 => 'Monday', 2 => 'Tuesday', 3 => 'Wednesday', 4 => 'Thursday', 5 => 'Friday', 6 => 'Saturday', 0 => 'Sunday'];
+    $names = [1 => 'Lunedì', 2 => 'Martedì', 3 => 'Mercoledì', 4 => 'Giovedì', 5 => 'Venerdì', 6 => 'Sabato', 0 => 'Domenica'];
     $rows  = [];
     foreach ($names as $day => $name) {
         $services = $hours[$day] ?? [];
@@ -390,7 +399,7 @@ $schema = [
     '@type'              => 'Restaurant',
     'name'               => $site['name'] . ' ' . $site['descriptor'],
     'description'        => $site['description'],
-    'servesCuisine'      => ['Italian', 'Emilian'],
+    'servesCuisine'      => ['Italiana', 'Emiliana'],
     'priceRange'         => '€€€',
     'telephone'          => $site['phone'],
     'email'              => $site['email'],
@@ -410,7 +419,7 @@ $schema = [
 ];
 ?>
 <!DOCTYPE html>
-<html lang="en" class="no-js">
+<html lang="it" class="no-js">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -423,6 +432,7 @@ $schema = [
 
     <!-- Social sharing -->
     <meta property="og:type" content="restaurant">
+    <meta property="og:locale" content="it_IT">
     <meta property="og:title" content="<?= e($site['title']) ?>">
     <meta property="og:description" content="<?= e($site['description']) ?>">
     <meta property="og:url" content="<?= e($baseUrl) ?>">
@@ -469,7 +479,7 @@ $schema = [
 </head>
 
 <body>
-    <a class="skip-link" href="#main">Skip to content</a>
+    <a class="skip-link" href="#main">Vai al contenuto</a>
 
     <!-- ══════════════════════════════════════════════════════════════════════
          LOADING SCREEN
@@ -481,7 +491,7 @@ $schema = [
             <p class="loader__tag"><?= e($site['descriptor']) ?> · <?= e($site['city']) ?></p>
         </div>
         <div class="loader__foot">
-            <span class="loader__label">Setting the table</span>
+            <span class="loader__label">Apparecchiamo la tavola</span>
             <span class="loader__bar"><span data-loader-bar></span></span>
             <span class="loader__count"><span data-loader-count>0</span>%</span>
         </div>
@@ -501,7 +511,7 @@ $schema = [
          ══════════════════════════════════════════════════════════════════════ -->
     <header class="header" data-header>
         <div class="header__inner">
-            <a class="brand" href="#home" aria-label="<?= e($site['name']) ?> — back to the top">
+            <a class="brand" href="#home" aria-label="<?= e($site['name']) ?> — torna all’inizio">
                 <?= brand_mark() ?>
                 <span class="brand__text">
                     <span class="brand__name"><?= e($site['name']) ?></span>
@@ -509,7 +519,7 @@ $schema = [
                 </span>
             </a>
 
-            <nav class="nav" aria-label="Primary">
+            <nav class="nav" aria-label="Navigazione principale">
                 <ul class="nav__list">
                     <?php foreach ($nav as $label => $href): ?>
                     <li><a class="nav__link" href="<?= e($href) ?>" data-nav-link><span><?= e($label) ?></span></a></li>
@@ -518,14 +528,14 @@ $schema = [
             </nav>
 
             <div class="header__actions">
-                <button class="icon-btn cart-btn" type="button" data-cart-open data-cart-target aria-label="Open your cart">
+                <button class="icon-btn cart-btn" type="button" data-cart-open data-cart-target aria-label="Apri il carrello">
                     <?= icon('shopping-bag-line') ?>
                     <span class="cart-btn__count" data-cart-count data-empty>0</span>
                 </button>
                 <a class="btn btn--primary btn--sm header__cta" href="#reservation" data-magnetic>
-                    <span class="btn__label" data-text="Reserve a Table"><span>Reserve a Table</span></span>
+                    <span class="btn__label" data-text="Prenota un tavolo"><span>Prenota un tavolo</span></span>
                 </a>
-                <button class="burger" type="button" data-nav-toggle aria-expanded="false" aria-controls="mobile-nav" aria-label="Open the menu">
+                <button class="burger" type="button" data-nav-toggle aria-expanded="false" aria-controls="mobile-nav" aria-label="Apri la navigazione">
                     <span></span><span></span>
                 </button>
             </div>
@@ -534,7 +544,7 @@ $schema = [
 
     <!-- Full-screen navigation (tablet & mobile) -->
     <div class="mobile-nav" id="mobile-nav" data-mobile-nav aria-hidden="true" inert>
-        <nav class="mobile-nav__inner" aria-label="Mobile">
+        <nav class="mobile-nav__inner" aria-label="Navigazione mobile">
             <ul class="mobile-nav__list">
                 <?php $i = 0; foreach ($nav as $label => $href): $i++; ?>
                 <li style="--i:<?= $i ?>">
@@ -547,7 +557,7 @@ $schema = [
             </ul>
             <div class="mobile-nav__foot" style="--i:<?= $i + 1 ?>">
                 <a class="btn btn--primary btn--block" href="#reservation">
-                    <span class="btn__label" data-text="Reserve a Table"><span>Reserve a Table</span></span>
+                    <span class="btn__label" data-text="Prenota un tavolo"><span>Prenota un tavolo</span></span>
                 </a>
                 <p class="mobile-nav__contact">
                     <a href="tel:<?= e($phoneHref) ?>"><?= $phoneText ?></a>
@@ -578,37 +588,37 @@ $schema = [
             <canvas class="hero__embers" data-embers aria-hidden="true"></canvas>
 
             <div class="container hero__content">
-                <p class="eyebrow hero__eyebrow" data-hero-item><span><?= e($site['descriptor']) ?> · <?= e($site['city']) ?><span class="hero__since"> · Since <?= e($site['since']) ?></span></span></p>
-                <h1 class="hero__title" data-hero-title>Where <em>time</em> is the first ingredient</h1>
+                <p class="eyebrow hero__eyebrow" data-hero-item><span><?= e($site['descriptor']) ?> · <?= e($site['city']) ?><span class="hero__since"> · Dal <?= e($site['since']) ?></span></span></p>
+                <h1 class="hero__title" data-hero-title>Dove il <em>tempo</em> è il primo ingrediente</h1>
                 <p class="hero__lead" data-hero-item>
-                    Beneath the seventeenth-century vaults of a Parma townhouse, the treasures of the Food Valley
-                    are served with patience, precision and a little poetry.
+                    Sotto le volte seicentesche di un palazzo parmigiano, i tesori della Food Valley
+                    sono serviti con pazienza, precisione e un pizzico di poesia.
                 </p>
                 <div class="hero__actions" data-hero-item>
                     <a class="btn btn--primary btn--lg" href="#reservation" data-magnetic>
-                        <span class="btn__label" data-text="Reserve a Table"><span>Reserve a Table</span></span>
+                        <span class="btn__label" data-text="Prenota un tavolo"><span>Prenota un tavolo</span></span>
                         <?= icon('arrow-right-line', 'btn__icon') ?>
                     </a>
                     <a class="btn btn--glass btn--lg" href="#menu" data-magnetic>
-                        <span class="btn__label" data-text="View Menu"><span>View Menu</span></span>
+                        <span class="btn__label" data-text="Scopri il menù"><span>Scopri il menù</span></span>
                     </a>
                 </div>
             </div>
 
             <div class="container hero__foot" data-hero-foot>
                 <ul class="hero__meta">
-                    <li><span>Dinner</span>Tuesday — Saturday, from 7 pm</li>
-                    <li><span>Address</span><?= e($site['street']) ?>, <?= e($site['city']) ?></li>
-                    <li><span>Guests say</span><?= e(number_format($site['rating']['score'], 1)) ?> / 5 · <?= e(number_format($site['rating']['count'])) ?> reviews</li>
+                    <li><span>Cena</span>Da martedì a sabato, dalle 19:00</li>
+                    <li><span>Indirizzo</span><?= e($site['street']) ?>, <?= e($site['city']) ?></li>
+                    <li><span>Dicono di noi</span><?= e(number($site['rating']['score'], 1)) ?> / 5 · <?= e(number($site['rating']['count'])) ?> recensioni</li>
                 </ul>
-                <a class="scroll-cue" href="#about" aria-label="Scroll to our story">
-                    <span class="scroll-cue__label">Scroll</span>
+                <a class="scroll-cue" href="#about" aria-label="Scorri fino alla nostra storia">
+                    <span class="scroll-cue__label">Scorri</span>
                     <span class="scroll-cue__line"></span>
                 </a>
             </div>
 
-            <a class="seal hero__seal" href="#reservation" data-magnetic data-hero-seal aria-label="Reserve a table">
-                <?= seal('seal-hero', 'Reserve your table · Buonasera · Reserve your table · Buonasera ·') ?>
+            <a class="seal hero__seal" href="#reservation" data-magnetic data-hero-seal aria-label="Prenota un tavolo">
+                <?= seal('seal-hero', 'Prenota un tavolo · Buonasera · Prenota un tavolo · Buonasera ·') ?>
                 <?= icon('arrow-right-down-line', 'seal__icon') ?>
             </a>
         </section>
@@ -639,52 +649,52 @@ $schema = [
 
                 <div class="about__media">
                     <figure class="about__img about__img--main media" data-reveal="clip">
-                        <?= img('about/pasta', 'Fresh tagliatelle being portioned by hand on a floured board', '(min-width: 1000px) 38vw, 86vw', ['class' => 'media__img', 'attrs' => 'data-parallax="12"']) ?>
+                        <?= img('about/pasta', 'Tagliatelle fresche porzionate a mano su un tagliere infarinato', '(min-width: 1000px) 38vw, 86vw', ['class' => 'media__img', 'attrs' => 'data-parallax="12"']) ?>
                     </figure>
                     <figure class="about__img about__img--small media" data-reveal="clip" data-float="-60">
-                        <?= img('about/parmigiano', 'Wheels of Parmigiano Reggiano ageing in a warehouse', '(min-width: 1000px) 18vw, 40vw', ['class' => 'media__img']) ?>
+                        <?= img('about/parmigiano', 'Forme di Parmigiano Reggiano in stagionatura in un magazzino', '(min-width: 1000px) 18vw, 40vw', ['class' => 'media__img']) ?>
                     </figure>
                     <div class="about__since" data-reveal="fade" data-float="40">
-                        <span>Since</span>
+                        <span>Dal</span>
                         <strong><?= e($site['since']) ?></strong>
                     </div>
                 </div>
 
                 <div class="about__body">
-                    <p class="eyebrow" data-reveal>Our story</p>
-                    <h2 class="title" data-split>Three generations, one <span class="nowrap"><em>obsession</em>:</span> <span class="nowrap">the ingredient.</span></h2>
+                    <p class="eyebrow" data-reveal>La nostra storia</p>
+                    <h2 class="title" data-split>Tre generazioni, una sola <span class="nowrap"><em>ossessione</em>:</span> <span class="nowrap">la materia prima.</span></h2>
                     <p class="lead" data-reveal>
-                        It began in <?= e($site['since']) ?> with six tables, a wood-fired stove and the recipes Ada Bellini
-                        carried in her head. Nearly four decades later her grandson Lorenzo cooks in the same
-                        townhouse — with the same stubborn respect for the product.
+                        Tutto è cominciato nel <?= e($site['since']) ?> con sei tavoli, una stufa a legna e le ricette che Ada Bellini
+                        custodiva a memoria. Quasi quattro decenni dopo, suo nipote Lorenzo cucina nello stesso
+                        palazzo, con lo stesso ostinato rispetto per il prodotto.
                     </p>
                     <p data-reveal>
-                        Culatello aged in the fog of the Bassa, Parmigiano brought down from the hills, pasta rolled at dawn:
-                        nothing here is rushed and nothing is left to chance. <?= e($site['name']) ?> is a house of quiet gestures,
-                        where every evening is composed like a score.
+                        Culatello stagionato nelle nebbie della Bassa, Parmigiano sceso dalle colline, pasta tirata all’alba:
+                        qui nulla è fatto in fretta e nulla è lasciato al caso. <?= e($site['name']) ?> è una casa di gesti silenziosi,
+                        dove ogni serata si compone come una partitura.
                     </p>
 
                     <ul class="features" data-reveal-group>
                         <li class="feature" data-spotlight>
                             <span class="feature__icon"><?= icon('hand-heart-line') ?></span>
-                            <h3 class="feature__title">Sfoglia at dawn</h3>
-                            <p class="feature__text">Every pasta is rolled, cut and filled by hand each morning.</p>
+                            <h3 class="feature__title">La sfoglia all’alba</h3>
+                            <p class="feature__text">Ogni pasta è tirata, tagliata e ripiena a mano ogni mattina.</p>
                         </li>
                         <li class="feature" data-spotlight>
                             <span class="feature__icon"><?= icon('seedling-line') ?></span>
-                            <h3 class="feature__title">The Food Valley, unfiltered</h3>
-                            <p class="feature__text">Fourteen producers we know by name, all within thirty kilometres.</p>
+                            <h3 class="feature__title">La Food Valley, senza filtri</h3>
+                            <p class="feature__text">Quattordici produttori che conosciamo per nome, tutti nel raggio di trenta chilometri.</p>
                         </li>
                         <li class="feature" data-spotlight>
                             <span class="feature__icon"><?= icon('goblet-line') ?></span>
-                            <h3 class="feature__title">A cellar with a memory</h3>
-                            <p class="feature__text">240 labels, from Lambrusco growers to the great vintages.</p>
+                            <h3 class="feature__title">Una cantina che ha memoria</h3>
+                            <p class="feature__text">240 etichette, dai vignaioli del Lambrusco alle grandi annate.</p>
                         </li>
                     </ul>
 
                     <div class="signature-line" data-reveal>
                         <span class="signature-line__name"><?= e($site['chef']) ?></span>
-                        <span class="signature-line__role">Chef &amp; third generation</span>
+                        <span class="signature-line__role">Chef, terza generazione</span>
                     </div>
                 </div>
             </div>
@@ -710,25 +720,25 @@ $schema = [
                 <header class="section__head section__head--split">
                     <div>
                         <p class="eyebrow" data-reveal>La carta</p>
-                        <h2 class="title" data-split>A menu written by the <em>seasons</em></h2>
+                        <h2 class="title" data-split>Un menù scritto dalle <em>stagioni</em></h2>
                     </div>
                     <p class="section__intro" data-reveal>
-                        Short, precise and rewritten four times a year. Every dish can be enjoyed at our table —
-                        or at yours, with delivery and take-away.
+                        Breve, preciso e riscritto quattro volte l’anno. Ogni piatto si può gustare alla nostra tavola,
+                        oppure alla tua, con consegna a domicilio e asporto.
                     </p>
                 </header>
 
                 <div class="menu__bar" data-reveal>
-                    <div class="tabs" role="tablist" aria-label="Menu categories" data-filter-tabs="menu">
+                    <div class="tabs" role="tablist" aria-label="Categorie del menù" data-filter-tabs="menu">
                         <span class="tabs__pill" data-filter-pill aria-hidden="true"></span>
                         <?php $first = true; foreach ($menu as $slug => $category): ?>
                         <button class="tabs__btn<?= $first ? ' is-active' : '' ?>" type="button" role="tab"
-                                aria-selected="<?= $first ? 'true' : 'false' ?>" data-filter="<?= e($slug) ?>" data-filter-title="<?= e($category['it']) ?>">
+                                aria-selected="<?= $first ? 'true' : 'false' ?>" data-filter="<?= e($slug) ?>" data-filter-title="<?= e($category['motto']) ?>">
                             <?= e($category['label']) ?><sup><?= count($category['items']) ?></sup>
                         </button>
                         <?php $first = false; endforeach; ?>
                     </div>
-                    <p class="menu__category" aria-hidden="true"><span data-filter-heading="menu"><?= e(reset($menu)['it']) ?></span></p>
+                    <p class="menu__category" aria-hidden="true"><span data-filter-heading="menu"><?= e(reset($menu)['motto']) ?></span></p>
                 </div>
 
                 <div class="menu__grid" data-filter-grid="menu" aria-live="polite">
@@ -739,8 +749,8 @@ $schema = [
                             <span class="dish__glare" aria-hidden="true"></span>
                             <?php if ($item['tag']): ?><span class="dish__tag"><?= e($item['tag']) ?></span><?php endif; ?>
                             <span class="dish__qty" data-dish-qty hidden>0</span>
-                            <button class="dish__add" type="button" data-add="<?= e($item['id']) ?>" aria-label="Add <?= e($item['name']) ?> to your order">
-                                <?= icon('add-line') ?><span>Add to order</span>
+                            <button class="dish__add" type="button" data-add="<?= e($item['id']) ?>" aria-label="Aggiungi <?= e($item['name']) ?> all’ordine">
+                                <?= icon('add-line') ?><span>Aggiungi all’ordine</span>
                             </button>
                         </div>
                         <div class="dish__body">
@@ -758,13 +768,13 @@ $schema = [
                 <footer class="menu__note" data-reveal>
                     <div class="menu__note-item">
                         <?= icon('sparkling-line') ?>
-                        <p><strong>Tasting menu · seven courses · €95</strong><span>Wine pairing by our sommelier, €55. Served to the whole table.</span></p>
+                        <p><strong>Menù degustazione · sette portate · <?= e(price(95)) ?></strong><span>Abbinamento vini del nostro sommelier, <?= e(price(55)) ?>. Servito per l’intero tavolo.</span></p>
                     </div>
                     <div class="menu__note-item">
                         <?= icon('information-line') ?>
-                        <p><strong>Allergies &amp; intolerances</strong><span>Tell us when you book: the kitchen adapts every dish it can.</span></p>
+                        <p><strong>Allergie e intolleranze</strong><span>Segnalale al momento della prenotazione: la cucina adatta ogni piatto che può.</span></p>
                     </div>
-                    <a class="link-arrow" href="#reservation"><span>Reserve a Table</span><?= icon('arrow-right-line') ?></a>
+                    <a class="link-arrow" href="#reservation"><span>Prenota un tavolo</span><?= icon('arrow-right-line') ?></a>
                 </footer>
             </div>
         </section>
@@ -777,19 +787,19 @@ $schema = [
             <div class="container">
                 <header class="section__head section__head--split">
                     <div>
-                        <p class="eyebrow" data-reveal>Gallery</p>
-                        <h2 class="title" data-split>An evening, <em>frame by frame</em></h2>
+                        <p class="eyebrow" data-reveal>Galleria</p>
+                        <h2 class="title" data-split>Una serata, <em>scatto dopo scatto</em></h2>
                     </div>
                     <div class="gallery__controls" data-reveal>
                         <p class="gallery__fraction"><span data-gallery-current>01</span><i></i><span><?= sprintf('%02d', count($gallery)) ?></span></p>
-                        <button class="icon-btn icon-btn--line" type="button" data-gallery-prev aria-label="Previous photographs"><?= icon('arrow-left-line') ?></button>
-                        <button class="icon-btn icon-btn--line" type="button" data-gallery-next aria-label="Next photographs"><?= icon('arrow-right-line') ?></button>
+                        <button class="icon-btn icon-btn--line" type="button" data-gallery-prev aria-label="Fotografie precedenti"><?= icon('arrow-left-line') ?></button>
+                        <button class="icon-btn icon-btn--line" type="button" data-gallery-next aria-label="Fotografie successive"><?= icon('arrow-right-line') ?></button>
                     </div>
                 </header>
             </div>
 
             <div class="gallery__viewport" data-reveal="fade">
-                <div class="swiper gallery__swiper" data-gallery data-cursor="Drag">
+                <div class="swiper gallery__swiper" data-gallery data-cursor="Scorri">
                     <div class="swiper-wrapper">
                         <?php foreach ($gallery as $n => $photo): ?>
                         <div class="swiper-slide gallery__slide gallery__slide--<?= e($photo['shape']) ?>">
@@ -821,44 +831,44 @@ $schema = [
 
                 <div class="signature__media">
                     <figure class="signature__img media" data-reveal="clip">
-                        <?= img('signature/tortelli', 'Tortelli d’erbetta with melted butter and Parmigiano on a charcoal plate', '(min-width: 1000px) 44vw, 90vw', ['class' => 'media__img', 'attrs' => 'data-parallax="10"']) ?>
+                        <?= img('signature/tortelli', 'Tortelli d’erbetta con burro fuso e Parmigiano su un piatto color antracite', '(min-width: 1000px) 44vw, 90vw', ['class' => 'media__img', 'attrs' => 'data-parallax="10"']) ?>
                     </figure>
                     <figure class="signature__chef media" data-reveal="clip" data-float="-50">
-                        <?= img('signature/chef', 'The chef finishing a plate with tweezers', '(min-width: 1000px) 16vw, 36vw', ['class' => 'media__img']) ?>
+                        <?= img('signature/chef', 'Lo chef rifinisce un piatto con le pinzette', '(min-width: 1000px) 16vw, 36vw', ['class' => 'media__img']) ?>
                     </figure>
                     <div class="seal signature__seal" data-float="30" aria-hidden="true">
-                        <?= seal('seal-special', 'Chef’s Special · Signature dish · Chef’s Special · Signature dish ·') ?>
+                        <?= seal('seal-special', 'Piatto dello chef · Dal ' . $site['since'] . ' · Piatto dello chef · Dal ' . $site['since'] . ' ·') ?>
                         <?= brand_mark('seal__mark') ?>
                     </div>
                 </div>
 
                 <div class="signature__body">
-                    <p class="eyebrow" data-reveal>Chef’s Special</p>
-                    <h2 class="title" data-split>Tortelli d’erbetta, the dish that <em>built the house</em></h2>
+                    <p class="eyebrow" data-reveal>Il piatto dello chef</p>
+                    <h2 class="title" data-split>Tortelli d’erbetta, il piatto che ha fatto <em>la nostra storia</em></h2>
                     <p class="lead" data-reveal>
-                        Paper-thin egg pasta, a filling of fresh ricotta and garden chard, then nothing but melted
-                        mountain butter and a snowfall of thirty-six-month Parmigiano. In Parma it is served on
-                        the night of San Giovanni; here, every evening.
+                        Sfoglia all’uovo sottile come carta, un ripieno di ricotta fresca ed erbette dell’orto, poi soltanto
+                        burro fuso di montagna e una nevicata di Parmigiano trentasei mesi. A Parma si servono
+                        la notte di San Giovanni; qui, ogni sera.
                     </p>
 
                     <dl class="specs" data-reveal-group>
-                        <div class="specs__item"><dt>Pasta</dt><dd>30 yolks per kilo of flour, rolled by hand</dd></div>
-                        <div class="specs__item"><dt>Pairing</dt><dd>Malvasia di Candia, Colli di Parma</dd></div>
-                        <div class="specs__item"><dt>Since</dt><dd>On the menu, unchanged, since <?= e($site['since']) ?></dd></div>
+                        <div class="specs__item"><dt>Sfoglia</dt><dd>30 tuorli per chilo di farina, tirata a mano</dd></div>
+                        <div class="specs__item"><dt>Abbinamento</dt><dd>Malvasia di Candia, Colli di Parma</dd></div>
+                        <div class="specs__item"><dt>In carta</dt><dd>Immutati dal <?= e($site['since']) ?></dd></div>
                     </dl>
 
                     <blockquote class="quote" data-reveal>
                         <?= icon('double-quotes-l', 'quote__mark') ?>
-                        <p>My grandmother folded two hundred of these every morning. I have never changed her recipe — only tried to deserve it.</p>
-                        <cite><?= e($site['chef']) ?>, Chef</cite>
+                        <p>Mia nonna ne chiudeva duecento ogni mattina. Non ho mai cambiato la sua ricetta: ho solo cercato di meritarla.</p>
+                        <cite><?= e($site['chef']) ?>, chef</cite>
                     </blockquote>
 
                     <div class="signature__actions" data-reveal>
                         <button class="btn btn--primary btn--lg" type="button" data-add="<?= e($special['id']) ?>" data-magnetic>
-                            <span class="btn__label" data-text="Add to order · <?= e(price((float) $special['price'])) ?>"><span>Add to order · <?= e(price((float) $special['price'])) ?></span></span>
+                            <span class="btn__label" data-text="Aggiungi all’ordine · <?= e(price((float) $special['price'])) ?>"><span>Aggiungi all’ordine · <?= e(price((float) $special['price'])) ?></span></span>
                             <?= icon('add-line', 'btn__icon') ?>
                         </button>
-                        <a class="link-arrow" href="#reservation"><span>Taste it at our table</span><?= icon('arrow-right-line') ?></a>
+                        <a class="link-arrow" href="#reservation"><span>Assaggiali alla nostra tavola</span><?= icon('arrow-right-line') ?></a>
                     </div>
                 </div>
             </div>
@@ -873,47 +883,47 @@ $schema = [
             <div class="container reservation__grid">
 
                 <div class="reservation__intro">
-                    <p class="eyebrow" data-reveal>Reservation</p>
-                    <h2 class="title" data-split>Your table is <em>waiting</em></h2>
+                    <p class="eyebrow" data-reveal>Prenotazione</p>
+                    <h2 class="title" data-split>Il tuo tavolo ti <em>aspetta</em></h2>
                     <p class="lead" data-reveal>
-                        Choose the vaulted dining room or, on warm evenings, the courtyard terrace.
-                        We will confirm your table by email within the hour.
+                        Scegli la sala a volta oppure, nelle sere più calde, la terrazza nel cortile.
+                        Ti confermeremo il tavolo via email entro un’ora.
                     </p>
 
                     <div class="reservation__visual media" data-reveal="clip" data-seating-visual="Indoor">
-                        <?= img('reserve/indoor-room', 'The vaulted dining room, tables set for dinner', '(min-width: 1000px) 34vw, 90vw', ['class' => 'media__img reservation__photo', 'attrs' => 'data-seating-photo="Indoor"']) ?>
-                        <?= img('reserve/terrace-b', 'The terrace at dusk under strings of lights', '(min-width: 1000px) 34vw, 90vw', ['class' => 'media__img reservation__photo', 'attrs' => 'data-seating-photo="Terrace"']) ?>
+                        <?= img('reserve/indoor-room', 'La sala a volta, con i tavoli apparecchiati per la cena', '(min-width: 1000px) 34vw, 90vw', ['class' => 'media__img reservation__photo', 'attrs' => 'data-seating-photo="Indoor"']) ?>
+                        <?= img('reserve/terrace-b', 'La terrazza al tramonto sotto fili di luci', '(min-width: 1000px) 34vw, 90vw', ['class' => 'media__img reservation__photo', 'attrs' => 'data-seating-photo="Terrace"']) ?>
                         <p class="reservation__caption">
-                            <span data-seating-caption="Indoor">Sala delle Volte · 42 seats</span>
-                            <span data-seating-caption="Terrace">La Corte · open May to September</span>
+                            <span data-seating-caption="Indoor">Sala delle Volte · 42 coperti</span>
+                            <span data-seating-caption="Terrace">La Corte · aperta da maggio a settembre</span>
                         </p>
                     </div>
 
                     <ul class="facts" data-reveal-group>
-                        <li><?= icon('time-line') ?><span>Dinner Tuesday to Saturday · Lunch Friday to Sunday</span></li>
-                        <li><?= icon('group-line') ?><span>More than eight guests? Call us on <a href="tel:<?= e($phoneHref) ?>"><?= $phoneText ?></a></span></li>
-                        <li><?= icon('shield-check-line') ?><span>Free cancellation up to 24 hours before</span></li>
+                        <li><?= icon('time-line') ?><span>Cena da martedì a sabato · Pranzo da venerdì a domenica</span></li>
+                        <li><?= icon('group-line') ?><span>Più di otto ospiti? Chiamaci al <a href="tel:<?= e($phoneHref) ?>"><?= $phoneText ?></a></span></li>
+                        <li><?= icon('shield-check-line') ?><span>Cancellazione gratuita fino a 24 ore prima</span></li>
                     </ul>
                 </div>
 
                 <form class="form panel" id="reservation-form" action="#reservation" method="post" novalidate data-reservation data-reveal>
                     <div class="form__head">
-                        <h3 class="form__title">Book a table</h3>
-                        <p class="form__hint">It takes less than a minute.</p>
+                        <h3 class="form__title">Prenota un tavolo</h3>
+                        <p class="form__hint">Basta meno di un minuto.</p>
                     </div>
 
                     <div class="form__grid">
                         <div class="field field--full" data-field>
-                            <label class="field__label" for="res-name">Name</label>
+                            <label class="field__label" for="res-name">Nome</label>
                             <div class="field__control">
                                 <?= icon('user-line') ?>
-                                <input class="field__input" id="res-name" name="name" type="text" autocomplete="name" placeholder="Your full name" required minlength="2" maxlength="80">
+                                <input class="field__input" id="res-name" name="name" type="text" autocomplete="name" placeholder="Nome e cognome" required minlength="2" maxlength="80">
                             </div>
                             <p class="field__error" data-error></p>
                         </div>
 
                         <div class="field" data-field>
-                            <label class="field__label" for="res-phone">Phone</label>
+                            <label class="field__label" for="res-phone">Telefono</label>
                             <div class="field__control">
                                 <?= icon('phone-line') ?>
                                 <input class="field__input" id="res-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="+39 000 000 0000" required maxlength="24">
@@ -925,40 +935,40 @@ $schema = [
                             <label class="field__label" for="res-email">Email</label>
                             <div class="field__control">
                                 <?= icon('mail-line') ?>
-                                <input class="field__input" id="res-email" name="email" type="email" autocomplete="email" inputmode="email" placeholder="you@email.com" required maxlength="120">
+                                <input class="field__input" id="res-email" name="email" type="email" autocomplete="email" inputmode="email" placeholder="nome@email.it" required maxlength="120">
                             </div>
                             <p class="field__error" data-error></p>
                         </div>
 
                         <div class="field" data-field>
-                            <span class="field__label" id="res-guests-label">Number of guests</span>
+                            <span class="field__label" id="res-guests-label">Numero di ospiti</span>
                             <div class="field__control field__control--stepper" role="group" aria-labelledby="res-guests-label">
                                 <?= icon('group-line') ?>
-                                <output class="stepper__value" for="res-guests" data-guests-label>2 guests</output>
+                                <output class="stepper__value" for="res-guests" data-guests-label>2 ospiti</output>
                                 <input id="res-guests" name="guests" type="hidden" value="2" data-guests>
-                                <button class="stepper__btn" type="button" data-guests-step="-1" aria-label="One guest fewer"><?= icon('subtract-line') ?></button>
-                                <button class="stepper__btn" type="button" data-guests-step="1" aria-label="One more guest"><?= icon('add-line') ?></button>
+                                <button class="stepper__btn" type="button" data-guests-step="-1" aria-label="Un ospite in meno"><?= icon('subtract-line') ?></button>
+                                <button class="stepper__btn" type="button" data-guests-step="1" aria-label="Un ospite in più"><?= icon('add-line') ?></button>
                             </div>
                             <p class="field__error" data-error></p>
                         </div>
 
                         <div class="field" data-field role="radiogroup" aria-labelledby="res-seating-label">
-                            <span class="field__label" id="res-seating-label">Seating</span>
+                            <span class="field__label" id="res-seating-label">Tavolo</span>
                             <div class="segmented">
                                 <label class="segmented__option">
                                     <input type="radio" name="seating" value="Indoor" checked>
-                                    <span><?= icon('home-4-line') ?>Indoor</span>
+                                    <span><?= icon('home-4-line') ?>Sala</span>
                                 </label>
                                 <label class="segmented__option">
                                     <input type="radio" name="seating" value="Terrace">
-                                    <span><?= icon('sun-line') ?>Terrace</span>
+                                    <span><?= icon('sun-line') ?>Terrazza</span>
                                 </label>
                                 <span class="segmented__pill" aria-hidden="true"></span>
                             </div>
                         </div>
 
                         <div class="field" data-field>
-                            <label class="field__label" for="res-date">Date</label>
+                            <label class="field__label" for="res-date">Data</label>
                             <div class="field__control">
                                 <?= icon('calendar-line') ?>
                                 <input class="field__input" id="res-date" name="date" type="date" min="<?= e($today) ?>" required>
@@ -967,13 +977,13 @@ $schema = [
                         </div>
 
                         <div class="field" data-field>
-                            <label class="field__label" for="res-time">Time</label>
+                            <label class="field__label" for="res-time">Orario</label>
                             <div class="field__control field__control--select">
                                 <?= icon('time-line') ?>
                                 <select class="field__input" id="res-time" name="time" required>
-                                    <option value="" selected disabled hidden>Select a time</option>
+                                    <option value="" selected disabled hidden>Scegli un orario</option>
                                     <?php foreach ($slots as $service => $times): ?>
-                                    <optgroup label="<?= e($service) ?>" data-service="<?= e(strtolower($service)) ?>">
+                                    <optgroup label="<?= e($service) ?>">
                                         <?php foreach ($times as $time): ?>
                                         <option value="<?= e($time) ?>"><?= e($time) ?></option>
                                         <?php endforeach; ?>
@@ -986,19 +996,19 @@ $schema = [
                         </div>
 
                         <div class="field field--full" data-field>
-                            <label class="field__label" for="res-comments">Comments <span class="field__optional">Optional</span></label>
+                            <label class="field__label" for="res-comments">Note <span class="field__optional">Facoltativo</span></label>
                             <div class="field__control field__control--area">
-                                <textarea class="field__input" id="res-comments" name="comments" rows="3" maxlength="400" placeholder="An occasion to celebrate, an allergy, a favourite table…"></textarea>
+                                <textarea class="field__input" id="res-comments" name="comments" rows="3" maxlength="400" placeholder="Un’occasione da festeggiare, un’allergia, un tavolo preferito…"></textarea>
                             </div>
                         </div>
                     </div>
 
                     <button class="btn btn--primary btn--lg btn--block" type="submit" data-submit>
-                        <span class="btn__label" data-text="Reserve"><span>Reserve</span></span>
+                        <span class="btn__label" data-text="Prenota"><span>Prenota</span></span>
                         <?= icon('arrow-right-line', 'btn__icon') ?>
                         <span class="btn__spinner" aria-hidden="true"></span>
                     </button>
-                    <p class="form__note"><?= icon('shield-check-line') ?>No payment required. Your details are only used to manage your booking.</p>
+                    <p class="form__note"><?= icon('shield-check-line') ?>Nessun pagamento richiesto. I tuoi dati servono solo a gestire la prenotazione.</p>
                 </form>
             </div>
         </section>
@@ -1011,21 +1021,21 @@ $schema = [
             <div class="container order__grid">
 
                 <div class="order__intro">
-                    <p class="eyebrow" data-reveal>Order online</p>
-                    <h2 class="title" data-split><?= e($site['name']) ?>, at <em>your</em> table</h2>
+                    <p class="eyebrow" data-reveal>Ordina online</p>
+                    <h2 class="title" data-split><?= e($site['name']) ?>, alla <em>tua</em> tavola</h2>
                     <p class="lead" data-reveal>
-                        The same kitchen, the same ingredients — cooked to order, packed with care and brought
-                        to your door, or ready to collect in a few minutes.
+                        La stessa cucina, gli stessi ingredienti: cucinati al momento, confezionati con cura e portati
+                        a casa tua, oppure pronti da ritirare in pochi minuti.
                     </p>
 
-                    <div class="segmented segmented--lg" data-reveal role="radiogroup" aria-label="How would you like your order?">
+                    <div class="segmented segmented--lg" data-reveal role="radiogroup" aria-label="Come preferisci ricevere l’ordine?">
                         <label class="segmented__option">
                             <input type="radio" name="order-mode" value="delivery" data-order-mode checked>
-                            <span><?= icon('e-bike-2-line') ?>Delivery</span>
+                            <span><?= icon('e-bike-2-line') ?>Consegna</span>
                         </label>
                         <label class="segmented__option">
                             <input type="radio" name="order-mode" value="takeaway" data-order-mode>
-                            <span><?= icon('takeaway-line') ?>Take Away</span>
+                            <span><?= icon('takeaway-line') ?>Asporto</span>
                         </label>
                         <span class="segmented__pill" aria-hidden="true"></span>
                     </div>
@@ -1034,31 +1044,31 @@ $schema = [
                         <li class="order__fact">
                             <?= icon('timer-line') ?>
                             <strong data-mode-text="eta"><?= $order['deliveryEta'][0] ?>–<?= $order['deliveryEta'][1] ?> min</strong>
-                            <span data-mode-text="etaLabel">Estimated delivery</span>
+                            <span data-mode-text="etaLabel">Consegna stimata</span>
                         </li>
                         <li class="order__fact">
                             <?= icon('wallet-3-line') ?>
                             <strong data-mode-text="fee"><?= e(price($order['deliveryFee'])) ?></strong>
-                            <span data-mode-text="feeLabel">Delivery fee · free over <?= e(price((float) $order['freeFrom'])) ?></span>
+                            <span data-mode-text="feeLabel">Costo di consegna · gratis oltre <?= e(price((float) $order['freeFrom'])) ?></span>
                         </li>
                         <li class="order__fact">
                             <?= icon('map-pin-line') ?>
-                            <strong data-mode-text="zone">Within 5 km</strong>
-                            <span data-mode-text="zoneLabel">Parma centre and Oltretorrente</span>
+                            <strong data-mode-text="zone">Entro 5 km</strong>
+                            <span data-mode-text="zoneLabel">Parma centro e Oltretorrente</span>
                         </li>
                     </ul>
 
                     <ol class="steps" data-reveal-group>
-                        <li><span>01</span>Choose your dishes</li>
-                        <li><span>02</span>Review your cart</li>
-                        <li><span>03</span>We cook, you enjoy</li>
+                        <li><span>01</span>Scegli i piatti</li>
+                        <li><span>02</span>Controlla il carrello</li>
+                        <li><span>03</span>Noi cuciniamo, tu gusti</li>
                     </ol>
                 </div>
 
                 <div class="board panel" data-reveal>
                     <div class="board__head">
-                        <h3 class="board__title">Compose your order</h3>
-                        <div class="chips" role="tablist" aria-label="Order categories" data-filter-tabs="order">
+                        <h3 class="board__title">Componi il tuo ordine</h3>
+                        <div class="chips" role="tablist" aria-label="Categorie dell’ordine" data-filter-tabs="order">
                             <?php $first = true; foreach ($menu as $slug => $category): ?>
                             <button class="chips__btn<?= $first ? ' is-active' : '' ?>" type="button" role="tab"
                                     aria-selected="<?= $first ? 'true' : 'false' ?>" data-filter="<?= e($slug) ?>"><?= e($category['label']) ?></button>
@@ -1076,9 +1086,9 @@ $schema = [
                             </div>
                             <span class="row__price"><?= e(price((float) $item['price'])) ?></span>
                             <div class="qty" data-qty="<?= e($item['id']) ?>" data-value="0">
-                                <button class="qty__btn qty__btn--dec" type="button" data-dec aria-label="Remove one <?= e($item['name']) ?>"><?= icon('subtract-line') ?></button>
+                                <button class="qty__btn qty__btn--dec" type="button" data-dec aria-label="Diminuisci la quantità di <?= e($item['name']) ?>"><?= icon('subtract-line') ?></button>
                                 <output class="qty__value" aria-live="polite">0</output>
-                                <button class="qty__btn qty__btn--inc" type="button" data-inc aria-label="Add one <?= e($item['name']) ?>"><?= icon('add-line') ?></button>
+                                <button class="qty__btn qty__btn--inc" type="button" data-inc aria-label="Aumenta la quantità di <?= e($item['name']) ?>"><?= icon('add-line') ?></button>
                             </div>
                         </li>
                         <?php endforeach; endforeach; ?>
@@ -1086,11 +1096,11 @@ $schema = [
 
                     <div class="board__foot">
                         <p class="board__sum">
-                            <span data-cart-summary>Your cart is empty</span>
-                            <strong data-cart-total>€0.00</strong>
+                            <span data-cart-summary>Il carrello è vuoto</span>
+                            <strong data-cart-total>0,00&nbsp;€</strong>
                         </p>
                         <button class="btn btn--primary" type="button" data-cart-open>
-                            <span class="btn__label" data-text="View cart"><span>View cart</span></span>
+                            <span class="btn__label" data-text="Vedi il carrello"><span>Vedi il carrello</span></span>
                             <?= icon('shopping-bag-line', 'btn__icon') ?>
                         </button>
                     </div>
@@ -1105,39 +1115,39 @@ $schema = [
         <section class="section reviews" id="reviews" data-section="reviews">
             <div class="container reviews__head">
                 <div>
-                    <p class="eyebrow" data-reveal>Guest reviews</p>
-                    <h2 class="title" data-split>Words from <em>our tables</em></h2>
+                    <p class="eyebrow" data-reveal>Le recensioni</p>
+                    <h2 class="title" data-split>Parole dai <em>nostri tavoli</em></h2>
                 </div>
                 <div class="rating" data-reveal>
-                    <span class="rating__score" data-count="<?= e($site['rating']['score']) ?>" data-decimals="1"><?= e(number_format($site['rating']['score'], 1)) ?></span>
+                    <span class="rating__score" data-count="<?= e($site['rating']['score']) ?>" data-decimals="1"><?= e(number($site['rating']['score'], 1)) ?></span>
                     <div class="rating__meta">
-                        <span class="stars" role="img" aria-label="<?= e($site['rating']['score']) ?> out of 5"><?= str_repeat(icon('star-fill'), 5) ?></span>
-                        <span>Average of <?= e(number_format($site['rating']['count'])) ?> verified guests</span>
+                        <span class="stars" role="img" aria-label="<?= e(number($site['rating']['score'], 1)) ?> su 5"><?= str_repeat(icon('star-fill'), 5) ?></span>
+                        <span>Media di <?= e(number($site['rating']['count'])) ?> ospiti verificati</span>
                     </div>
                     <div class="rating__nav">
-                        <button class="icon-btn icon-btn--line" type="button" data-reviews-prev aria-label="Previous reviews"><?= icon('arrow-left-line') ?></button>
-                        <button class="icon-btn icon-btn--line" type="button" data-reviews-next aria-label="Next reviews"><?= icon('arrow-right-line') ?></button>
+                        <button class="icon-btn icon-btn--line" type="button" data-reviews-prev aria-label="Recensioni precedenti"><?= icon('arrow-left-line') ?></button>
+                        <button class="icon-btn icon-btn--line" type="button" data-reviews-next aria-label="Recensioni successive"><?= icon('arrow-right-line') ?></button>
                     </div>
                 </div>
             </div>
 
             <div class="reviews__viewport" data-reveal="fade">
-                <div class="swiper reviews__swiper" data-reviews data-cursor="Drag">
+                <div class="swiper reviews__swiper" data-reviews data-cursor="Scorri">
                     <div class="swiper-wrapper">
                         <?php foreach ($reviews as $review): $loved = $dishes[$review['dish']] ?? null; ?>
                         <article class="swiper-slide review" data-spotlight>
                             <header class="review__top">
-                                <span class="stars" role="img" aria-label="5 out of 5"><?= str_repeat(icon('star-fill'), 5) ?></span>
+                                <span class="stars" role="img" aria-label="5 su 5"><?= str_repeat(icon('star-fill'), 5) ?></span>
                                 <span class="review__occasion"><?= e($review['occasion']) ?></span>
                             </header>
-                            <blockquote class="review__text"><p>“<?= e($review['text']) ?>”</p></blockquote>
+                            <blockquote class="review__text"><p>«<?= e($review['text']) ?>»</p></blockquote>
                             <footer class="review__foot">
                                 <span class="avatar" aria-hidden="true"><?= e(initials($review['name'])) ?></span>
                                 <p class="review__author"><strong><?= e($review['name']) ?></strong><span><?= e($review['from']) ?></span></p>
                                 <?php if ($loved): ?>
                                 <p class="review__dish">
                                     <img src="<?= e($loved['image']) ?>" width="44" height="44" alt="" loading="lazy" decoding="async">
-                                    <span>Loved<strong><?= e($loved['name']) ?></strong></span>
+                                    <span>Ha amato<strong><?= e($loved['name']) ?></strong></span>
                                 </p>
                                 <?php endif; ?>
                             </footer>
@@ -1155,10 +1165,10 @@ $schema = [
         <section class="section section--alt faq" id="faq" data-section="faq">
             <div class="container faq__grid">
                 <div class="faq__aside">
-                    <p class="eyebrow" data-reveal>Good to know</p>
-                    <h2 class="title" data-split>Questions, <em>answered</em></h2>
-                    <p class="lead" data-reveal>Everything you may want to know before your evening with us.</p>
-                    <a class="link-arrow" href="tel:<?= e($phoneHref) ?>" data-reveal><span>Still curious? Call <?= $phoneText ?></span><?= icon('arrow-right-up-line') ?></a>
+                    <p class="eyebrow" data-reveal>Buono a sapersi</p>
+                    <h2 class="title" data-split>Domande e <em>risposte</em></h2>
+                    <p class="lead" data-reveal>Tutto quello che può esserti utile sapere prima della tua serata da noi.</p>
+                    <a class="link-arrow" href="tel:<?= e($phoneHref) ?>" data-reveal><span>Altre domande? Chiamaci al <?= $phoneText ?></span><?= icon('arrow-right-up-line') ?></a>
                 </div>
 
                 <div class="accordion" data-accordion data-reveal-group>
@@ -1188,21 +1198,21 @@ $schema = [
             <div class="container contact__grid">
 
                 <div class="contact__info">
-                    <p class="eyebrow" data-reveal>Contact</p>
-                    <h2 class="title" data-split>Find your way <em>to us</em></h2>
+                    <p class="eyebrow" data-reveal>Contatti</p>
+                    <h2 class="title" data-split>La strada <em>fino a noi</em></h2>
 
                     <ul class="contact__list" data-reveal-group>
                         <li class="contact__item">
                             <span class="contact__icon"><?= icon('map-pin-line') ?></span>
                             <div>
-                                <span class="contact__label">Address</span>
+                                <span class="contact__label">Indirizzo</span>
                                 <address><?= e($site['street']) ?><br><?= e($site['zip']) ?> <?= e($site['city']) ?>, <?= e($site['country']) ?></address>
                             </div>
                         </li>
                         <li class="contact__item">
                             <span class="contact__icon"><?= icon('phone-line') ?></span>
                             <div>
-                                <span class="contact__label">Phone</span>
+                                <span class="contact__label">Telefono</span>
                                 <a href="tel:<?= e($phoneHref) ?>"><?= $phoneText ?></a>
                             </div>
                         </li>
@@ -1217,8 +1227,8 @@ $schema = [
 
                     <div class="hours panel" data-rest data-reveal data-spotlight>
                         <div class="hours__head">
-                            <h3 class="hours__title">Opening hours</h3>
-                            <span class="status" data-open-status hidden><i></i><span data-open-label>Open now</span></span>
+                            <h3 class="hours__title">Orari di apertura</h3>
+                            <span class="status" data-open-status hidden><i></i><span data-open-label>Aperto ora</span></span>
                         </div>
                         <dl class="hours__list">
                             <?php foreach (opening_rows($hours) as $row): ?>
@@ -1226,7 +1236,7 @@ $schema = [
                                 <dt><?= e($row['from'] === $row['to'] ? $row['from'] : $row['from'] . ' — ' . $row['to']) ?></dt>
                                 <dd>
                                     <?php if (!$row['services']): ?>
-                                    <span class="hours__closed">Closed</span>
+                                    <span class="hours__closed">Chiuso</span>
                                     <?php else: foreach ($row['services'] as $service): ?>
                                     <span><?= e($service[0]) ?> – <?= e($service[1]) ?></span>
                                     <?php endforeach; endif; ?>
@@ -1239,11 +1249,11 @@ $schema = [
                     <div class="contact__actions" data-reveal>
                         <a class="btn btn--primary" href="tel:<?= e($phoneHref) ?>" data-magnetic>
                             <?= icon('phone-line', 'btn__icon btn__icon--lead') ?>
-                            <span class="btn__label" data-text="Call us"><span>Call us</span></span>
+                            <span class="btn__label" data-text="Chiamaci"><span>Chiamaci</span></span>
                         </a>
                         <a class="btn btn--glass" href="<?= e($site['maps_url']) ?>" target="_blank" rel="noopener" data-magnetic>
                             <?= icon('direction-line', 'btn__icon btn__icon--lead') ?>
-                            <span class="btn__label" data-text="Get directions"><span>Get directions</span></span>
+                            <span class="btn__label" data-text="Come arrivare"><span>Come arrivare</span></span>
                         </a>
                     </div>
                 </div>
@@ -1281,9 +1291,9 @@ $schema = [
                     </div>
                     <div class="map__card">
                         <?= brand_mark('map__mark') ?>
-                        <p><strong><?= e($site['name']) ?> <?= e($site['descriptor']) ?></strong><span><?= e($site['street']) ?> · 2 min from Piazza Duomo</span></p>
+                        <p><strong><?= e($site['name']) ?> <?= e($site['descriptor']) ?></strong><span><?= e($site['street']) ?> · a 2 min da Piazza Duomo</span></p>
                     </div>
-                    <div class="map__legend" aria-hidden="true"><?= icon('walk-line') ?><span>6 min from Piazza Garibaldi</span></div>
+                    <div class="map__legend" aria-hidden="true"><?= icon('walk-line') ?><span>6 min da Piazza Garibaldi</span></div>
                 </div>
             </div>
         </section>
@@ -1296,32 +1306,32 @@ $schema = [
     <footer class="footer" data-section="footer">
         <div class="container footer__cta">
             <p class="eyebrow eyebrow--center" data-reveal>Buonasera</p>
-            <h2 class="footer__headline" data-split>Shall we set <em>your</em> table?</h2>
+            <h2 class="footer__headline" data-split>Apparecchiamo il <em>tuo</em> tavolo?</h2>
             <a class="btn btn--primary btn--lg" href="#reservation" data-magnetic data-reveal>
-                <span class="btn__label" data-text="Reserve a Table"><span>Reserve a Table</span></span>
+                <span class="btn__label" data-text="Prenota un tavolo"><span>Prenota un tavolo</span></span>
                 <?= icon('arrow-right-line', 'btn__icon') ?>
             </a>
         </div>
 
         <div class="container footer__grid">
             <div class="footer__brand">
-                <a class="brand" href="#home" aria-label="<?= e($site['name']) ?> — back to the top">
+                <a class="brand" href="#home" aria-label="<?= e($site['name']) ?> — torna all’inizio">
                     <?= brand_mark() ?>
                     <span class="brand__text">
                         <span class="brand__name"><?= e($site['name']) ?></span>
                         <span class="brand__sub"><?= e($site['descriptor']) ?> · <?= e($site['city']) ?></span>
                     </span>
                 </a>
-                <p>Fine Italian dining beneath seventeenth-century vaults, in the heart of Parma. Family-run since <?= e($site['since']) ?>.</p>
+                <p>Alta cucina italiana sotto volte seicentesche, nel cuore di Parma. A conduzione familiare dal <?= e($site['since']) ?>.</p>
                 <ul class="socials">
                     <?php foreach ($site['social'] as $network => $profile): ?>
-                    <li><a class="icon-btn icon-btn--line" href="<?= e($profile['url']) ?>" target="_blank" rel="noopener" aria-label="<?= e($site['name']) ?> on <?= e($profile['label']) ?>"><?= icon($network . '-line') ?></a></li>
+                    <li><a class="icon-btn icon-btn--line" href="<?= e($profile['url']) ?>" target="_blank" rel="noopener" aria-label="<?= e($site['name']) ?> su <?= e($profile['label']) ?>"><?= icon($network . '-line') ?></a></li>
                     <?php endforeach; ?>
                 </ul>
             </div>
 
-            <nav class="footer__col" aria-label="Footer">
-                <h3 class="footer__title">Explore</h3>
+            <nav class="footer__col" aria-label="Navigazione a piè di pagina">
+                <h3 class="footer__title">Esplora</h3>
                 <ul class="footer__links">
                     <?php foreach ($nav as $label => $href): ?>
                     <li><a href="<?= e($href) ?>"><?= e($label) ?></a></li>
@@ -1330,7 +1340,7 @@ $schema = [
             </nav>
 
             <div class="footer__col">
-                <h3 class="footer__title">Visit</h3>
+                <h3 class="footer__title">Dove siamo</h3>
                 <address class="footer__address">
                     <?= e($site['street']) ?><br>
                     <?= e($site['zip']) ?> <?= e($site['city']) ?>, <?= e($site['country']) ?>
@@ -1339,16 +1349,16 @@ $schema = [
                     <li><a href="tel:<?= e($phoneHref) ?>"><?= $phoneText ?></a></li>
                     <li><a href="mailto:<?= e($site['email']) ?>"><?= e($site['email']) ?></a></li>
                 </ul>
-                <p class="footer__hours">Tue — Sat · dinner<br>Fri — Sun · lunch</p>
+                <p class="footer__hours">Mar — Sab · cena<br>Ven — Dom · pranzo</p>
             </div>
 
             <div class="footer__col footer__col--news">
                 <h3 class="footer__title">La lettera</h3>
-                <p>Seasonal menus, truffle evenings and the occasional secret from the cellar. Four letters a year, never more.</p>
+                <p>Menù di stagione, serate al tartufo e qualche segreto di cantina. Quattro lettere l’anno, mai di più.</p>
                 <form class="newsletter" action="#" method="post" novalidate data-newsletter>
-                    <label class="sr-only" for="newsletter-email">Email address</label>
-                    <input class="newsletter__input" id="newsletter-email" name="email" type="email" autocomplete="email" placeholder="Your email address" required>
-                    <button class="newsletter__btn" type="submit" aria-label="Subscribe to the newsletter"><?= icon('arrow-right-line') ?></button>
+                    <label class="sr-only" for="newsletter-email">Indirizzo email</label>
+                    <input class="newsletter__input" id="newsletter-email" name="email" type="email" autocomplete="email" placeholder="Il tuo indirizzo email" required>
+                    <button class="newsletter__btn" type="submit" aria-label="Iscriviti alla newsletter"><?= icon('arrow-right-line') ?></button>
                     <p class="newsletter__msg" data-newsletter-msg role="status"></p>
                 </form>
             </div>
@@ -1359,21 +1369,21 @@ $schema = [
         <div class="container footer__bottom">
             <p>© <?= $year ?> <?= e($site['name']) ?> <?= e($site['descriptor']) ?> · <?= e($site['vat']) ?></p>
             <ul class="footer__legal">
-                <li><button type="button" data-modal-open="legal" data-legal-target="legal-notice">Legal notice</button></li>
+                <li><button type="button" data-modal-open="legal" data-legal-target="legal-notice">Note legali</button></li>
                 <li><button type="button" data-modal-open="legal" data-legal-target="legal-privacy">Privacy</button></li>
-                <li><button type="button" data-modal-open="legal" data-legal-target="legal-cookies">Cookies</button></li>
+                <li><button type="button" data-modal-open="legal" data-legal-target="legal-cookies">Cookie</button></li>
             </ul>
-            <a class="to-top" href="#home"><span>Back to top</span><?= icon('arrow-up-line') ?></a>
+            <a class="to-top" href="#home"><span>Torna su</span><?= icon('arrow-up-line') ?></a>
         </div>
     </footer>
 
 
     <!-- Quick actions bar (small screens) -->
-    <nav class="dock" data-dock aria-label="Quick actions">
-        <a class="dock__item" href="tel:<?= e($phoneHref) ?>"><?= icon('phone-line') ?><span>Call</span></a>
-        <a class="dock__cta" href="#reservation">Reserve a Table</a>
+    <nav class="dock" data-dock aria-label="Azioni rapide">
+        <a class="dock__item" href="tel:<?= e($phoneHref) ?>"><?= icon('phone-line') ?><span>Chiama</span></a>
+        <a class="dock__cta" href="#reservation">Prenota un tavolo</a>
         <button class="dock__item" type="button" data-cart-open data-cart-target>
-            <?= icon('shopping-bag-line') ?><span>Cart</span>
+            <?= icon('shopping-bag-line') ?><span>Carrello</span>
             <b class="dock__count" data-cart-count data-empty>0</b>
         </button>
     </nav>
@@ -1387,21 +1397,21 @@ $schema = [
         <aside class="drawer__panel">
             <header class="drawer__head">
                 <div>
-                    <p class="eyebrow">Your order</p>
-                    <h2 class="drawer__title" id="cart-title">Cart <sup data-cart-count>0</sup></h2>
+                    <p class="eyebrow">Il tuo ordine</p>
+                    <h2 class="drawer__title" id="cart-title">Carrello <sup data-cart-count>0</sup></h2>
                 </div>
-                <button class="icon-btn icon-btn--line" type="button" data-overlay-close aria-label="Close the cart"><?= icon('close-line') ?></button>
+                <button class="icon-btn icon-btn--line" type="button" data-overlay-close aria-label="Chiudi il carrello"><?= icon('close-line') ?></button>
             </header>
 
             <div class="drawer__mode">
-                <div class="segmented" role="radiogroup" aria-label="How would you like your order?">
+                <div class="segmented" role="radiogroup" aria-label="Come preferisci ricevere l’ordine?">
                     <label class="segmented__option">
                         <input type="radio" name="cart-mode" value="delivery" data-order-mode checked>
-                        <span><?= icon('e-bike-2-line') ?>Delivery</span>
+                        <span><?= icon('e-bike-2-line') ?>Consegna</span>
                     </label>
                     <label class="segmented__option">
                         <input type="radio" name="cart-mode" value="takeaway" data-order-mode>
-                        <span><?= icon('takeaway-line') ?>Take Away</span>
+                        <span><?= icon('takeaway-line') ?>Asporto</span>
                     </label>
                     <span class="segmented__pill" aria-hidden="true"></span>
                 </div>
@@ -1411,10 +1421,10 @@ $schema = [
                 <ul class="cart-list" data-cart-list></ul>
                 <div class="cart-empty" data-cart-empty>
                     <span class="cart-empty__icon"><?= icon('shopping-bag-line') ?></span>
-                    <p class="cart-empty__title">Your cart is empty</p>
-                    <p>Add a few dishes and they will be waiting for you here.</p>
+                    <p class="cart-empty__title">Il carrello è vuoto</p>
+                    <p>Aggiungi qualche piatto: ti aspetterà qui.</p>
                     <a class="btn btn--glass" href="#delivery" data-overlay-close>
-                        <span class="btn__label" data-text="Browse the menu"><span>Browse the menu</span></span>
+                        <span class="btn__label" data-text="Sfoglia il menù"><span>Sfoglia il menù</span></span>
                     </a>
                 </div>
             </div>
@@ -1425,16 +1435,16 @@ $schema = [
                     <span class="free__bar"><span data-free-bar></span></span>
                 </div>
                 <dl class="totals">
-                    <div><dt>Subtotal</dt><dd data-cart-subtotal>€0.00</dd></div>
-                    <div><dt data-fee-label>Delivery fee</dt><dd data-cart-fee>€0.00</dd></div>
-                    <div class="totals__total"><dt>Total</dt><dd data-cart-grand>€0.00</dd></div>
+                    <div><dt>Subtotale</dt><dd data-cart-subtotal>0,00&nbsp;€</dd></div>
+                    <div><dt data-fee-label>Consegna</dt><dd data-cart-fee>0,00&nbsp;€</dd></div>
+                    <div class="totals__total"><dt>Totale</dt><dd data-cart-grand>0,00&nbsp;€</dd></div>
                 </dl>
                 <button class="btn btn--primary btn--lg btn--block" type="button" data-checkout>
-                    <span class="btn__label" data-text="Checkout"><span>Checkout</span></span>
+                    <span class="btn__label" data-text="Conferma l’ordine"><span>Conferma l’ordine</span></span>
                     <?= icon('arrow-right-line', 'btn__icon') ?>
                     <span class="btn__spinner" aria-hidden="true"></span>
                 </button>
-                <p class="drawer__note"><?= icon('shield-check-line') ?>Pay on delivery or at collection — card or cash.</p>
+                <p class="drawer__note"><?= icon('shield-check-line') ?>Paghi alla consegna o al ritiro, con carta o contanti.</p>
             </footer>
         </aside>
     </div>
@@ -1448,14 +1458,14 @@ $schema = [
     <div class="modal" id="modal-reservation" data-overlay="reservation" role="dialog" aria-modal="true" aria-labelledby="modal-reservation-title" aria-hidden="true" inert>
         <div class="modal__backdrop" data-overlay-close></div>
         <div class="modal__dialog">
-            <button class="icon-btn icon-btn--line modal__close" type="button" data-overlay-close aria-label="Close"><?= icon('close-line') ?></button>
+            <button class="icon-btn icon-btn--line modal__close" type="button" data-overlay-close aria-label="Chiudi"><?= icon('close-line') ?></button>
             <svg class="tick" viewBox="0 0 72 72" aria-hidden="true" focusable="false">
                 <circle cx="36" cy="36" r="33" pathLength="1"/>
                 <path d="M23 37.5l9 9 17.5-19" pathLength="1"/>
             </svg>
             <p class="eyebrow eyebrow--center"><span>Grazie<span data-res-name></span></span></p>
-            <h2 class="modal__title" id="modal-reservation-title">Your reservation request has been received.</h2>
-            <p class="modal__text">We will confirm your table by email within the hour. We look forward to welcoming you.</p>
+            <h2 class="modal__title" id="modal-reservation-title">La tua richiesta di prenotazione è stata ricevuta.</h2>
+            <p class="modal__text">Ti confermeremo il tavolo via email entro un’ora. Non vediamo l’ora di accoglierti.</p>
             <ul class="summary" data-res-summary>
                 <li><?= icon('calendar-line') ?><span data-res="date"></span></li>
                 <li><?= icon('time-line') ?><span data-res="time"></span></li>
@@ -1463,7 +1473,7 @@ $schema = [
                 <li><?= icon('map-pin-line') ?><span data-res="seating"></span></li>
             </ul>
             <button class="btn btn--primary" type="button" data-overlay-close>
-                <span class="btn__label" data-text="Wonderful"><span>Wonderful</span></span>
+                <span class="btn__label" data-text="Perfetto"><span>Perfetto</span></span>
             </button>
         </div>
     </div>
@@ -1472,13 +1482,13 @@ $schema = [
     <div class="modal" id="modal-order" data-overlay="order" role="dialog" aria-modal="true" aria-labelledby="modal-order-title" aria-hidden="true" inert>
         <div class="modal__backdrop" data-overlay-close></div>
         <div class="modal__dialog">
-            <button class="icon-btn icon-btn--line modal__close" type="button" data-overlay-close aria-label="Close"><?= icon('close-line') ?></button>
+            <button class="icon-btn icon-btn--line modal__close" type="button" data-overlay-close aria-label="Chiudi"><?= icon('close-line') ?></button>
             <svg class="tick" viewBox="0 0 72 72" aria-hidden="true" focusable="false">
                 <circle cx="36" cy="36" r="33" pathLength="1"/>
                 <path d="M23 37.5l9 9 17.5-19" pathLength="1"/>
             </svg>
-            <p class="eyebrow eyebrow--center"><span>Order <span data-order="ref"></span></span></p>
-            <h2 class="modal__title" id="modal-order-title">Your order is confirmed.</h2>
+            <p class="eyebrow eyebrow--center"><span>Ordine <span data-order="ref"></span></span></p>
+            <h2 class="modal__title" id="modal-order-title">Il tuo ordine è confermato.</h2>
             <p class="modal__text" data-order="text"></p>
             <ul class="summary">
                 <li><?= icon('timer-line') ?><span data-order="eta"></span></li>
@@ -1495,19 +1505,19 @@ $schema = [
     <div class="modal modal--text" id="modal-legal" data-overlay="legal" role="dialog" aria-modal="true" aria-labelledby="modal-legal-title" aria-hidden="true" inert>
         <div class="modal__backdrop" data-overlay-close></div>
         <div class="modal__dialog">
-            <button class="icon-btn icon-btn--line modal__close" type="button" data-overlay-close aria-label="Close"><?= icon('close-line') ?></button>
-            <p class="eyebrow">Information</p>
-            <h2 class="modal__title" id="modal-legal-title">Legal notice</h2>
+            <button class="icon-btn icon-btn--line modal__close" type="button" data-overlay-close aria-label="Chiudi"><?= icon('close-line') ?></button>
+            <p class="eyebrow">Informazioni</p>
+            <h2 class="modal__title" id="modal-legal-title">Note legali</h2>
             <div class="modal__scroll prose" data-lenis-prevent tabindex="0">
-                <h3 id="legal-notice">Publisher</h3>
+                <h3 id="legal-notice">Editore</h3>
                 <p><?= e($site['name']) ?> <?= e($site['descriptor']) ?> · <?= e($site['street']) ?>, <?= e($site['zip']) ?> <?= e($site['city']) ?> · <?= e($site['vat']) ?> · <?= e($site['email']) ?>.</p>
-                <p>This website is a design prototype. The restaurant, its menu, prices, reviews and contact details are fictional; reservations, orders and newsletter subscriptions are simulated in your browser and are neither stored nor transmitted.</p>
+                <p>Questo sito è un prototipo di design. Il ristorante, il menù, i prezzi, le recensioni e i recapiti sono di fantasia; prenotazioni, ordini e iscrizioni alla newsletter sono simulati nel tuo browser e non vengono né salvati né trasmessi.</p>
                 <h3 id="legal-privacy">Privacy</h3>
-                <p>No personal data is collected. The information typed into the forms never leaves your device and disappears when the page is closed. Fonts, scripts and images are served from this website only — no third-party request is made.</p>
-                <h3 id="legal-cookies">Cookies</h3>
-                <p>This website does not use cookies, trackers or analytics of any kind. You have nothing to accept.</p>
-                <h3>Credits</h3>
-                <p>Typefaces: Cormorant Garamond and Manrope (SIL Open Font License). Icons: Remix Icon. Motion: GSAP, Lenis and Swiper. Photography: the dishes, the drinks and the vaulted dining room are original images generated for this prototype; the other photographs are by Unsplash contributors (Unsplash License).</p>
+                <p>Non viene raccolto alcun dato personale. Le informazioni inserite nei moduli non lasciano mai il tuo dispositivo e scompaiono alla chiusura della pagina. Caratteri, script e immagini sono serviti esclusivamente da questo sito: non viene effettuata alcuna richiesta a terze parti.</p>
+                <h3 id="legal-cookies">Cookie</h3>
+                <p>Questo sito non utilizza cookie, tracciatori né strumenti di analisi di alcun tipo. Non c’è nulla da accettare.</p>
+                <h3>Crediti</h3>
+                <p>Caratteri: Cormorant Garamond e Manrope (SIL Open Font License). Icone: Remix Icon. Animazioni: GSAP, Lenis e Swiper. Fotografie: i piatti, le bevande e la sala a volta sono immagini originali generate per questo prototipo; le altre fotografie sono di autori di Unsplash (Unsplash License).</p>
             </div>
         </div>
     </div>
@@ -1516,7 +1526,7 @@ $schema = [
     <!-- ══════════════════════════════════════════════════════════════════════
          LIGHTBOX
          ══════════════════════════════════════════════════════════════════════ -->
-    <div class="lightbox" id="lightbox" data-overlay="lightbox" role="dialog" aria-modal="true" aria-label="Photo gallery" aria-hidden="true" inert>
+    <div class="lightbox" id="lightbox" data-overlay="lightbox" role="dialog" aria-modal="true" aria-label="Galleria fotografica" aria-hidden="true" inert>
         <div class="lightbox__backdrop" data-overlay-close></div>
         <figure class="lightbox__figure" data-lightbox-figure>
             <img class="lightbox__img" data-lightbox-img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="">
@@ -1525,9 +1535,9 @@ $schema = [
                 <span class="lightbox__label" data-lightbox-label></span>
             </figcaption>
         </figure>
-        <button class="icon-btn icon-btn--line lightbox__close" type="button" data-overlay-close aria-label="Close the gallery"><?= icon('close-line') ?></button>
-        <button class="icon-btn icon-btn--line lightbox__nav lightbox__nav--prev" type="button" data-lightbox-prev aria-label="Previous photograph"><?= icon('arrow-left-line') ?></button>
-        <button class="icon-btn icon-btn--line lightbox__nav lightbox__nav--next" type="button" data-lightbox-next aria-label="Next photograph"><?= icon('arrow-right-line') ?></button>
+        <button class="icon-btn icon-btn--line lightbox__close" type="button" data-overlay-close aria-label="Chiudi la galleria"><?= icon('close-line') ?></button>
+        <button class="icon-btn icon-btn--line lightbox__nav lightbox__nav--prev" type="button" data-lightbox-prev aria-label="Fotografia precedente"><?= icon('arrow-left-line') ?></button>
+        <button class="icon-btn icon-btn--line lightbox__nav lightbox__nav--next" type="button" data-lightbox-next aria-label="Fotografia successiva"><?= icon('arrow-right-line') ?></button>
     </div>
 
     <!-- Notifications -->
@@ -1544,14 +1554,14 @@ $schema = [
                 <h3 class="cart-item__name"></h3>
                 <p class="cart-item__unit"></p>
                 <div class="qty qty--inline" data-value="1">
-                    <button class="qty__btn qty__btn--dec" type="button" data-dec aria-label="Remove one"><?= icon('subtract-line') ?></button>
+                    <button class="qty__btn qty__btn--dec" type="button" data-dec aria-label="Diminuisci la quantità"><?= icon('subtract-line') ?></button>
                     <output class="qty__value">1</output>
-                    <button class="qty__btn qty__btn--inc" type="button" data-inc aria-label="Add one"><?= icon('add-line') ?></button>
+                    <button class="qty__btn qty__btn--inc" type="button" data-inc aria-label="Aumenta la quantità"><?= icon('add-line') ?></button>
                 </div>
             </div>
             <div class="cart-item__side">
                 <strong class="cart-item__total"></strong>
-                <button class="cart-item__remove" type="button" data-remove aria-label="Remove from cart"><?= icon('delete-bin-line') ?></button>
+                <button class="cart-item__remove" type="button" data-remove aria-label="Rimuovi dal carrello"><?= icon('delete-bin-line') ?></button>
             </div>
         </li>
     </template>

@@ -102,7 +102,7 @@ function render(changed = null) {
     });
 
     // Summary under the order board
-    setText('[data-cart-summary]', count ? `${count} ${count === 1 ? 'item' : 'items'} in your cart` : 'Your cart is empty');
+    setText('[data-cart-summary]', count ? `${count} ${count === 1 ? 'articolo' : 'articoli'} nel carrello` : 'Il carrello è vuoto');
     setText('[data-cart-total]', money(subtotal));
 
     // Drawer: empty state, free-delivery gauge, totals
@@ -111,14 +111,14 @@ function render(changed = null) {
 
     const missing = settings.freeFrom - subtotal;
     const gauge = $('[data-free-text]', drawer);
-    if (mode === 'takeaway') say(gauge, 'Collect at ', appData.address, ' — no fee, no minimum.');
-    else if (missing > 0) say(gauge, 'Add ', money(missing), ' more and delivery is on the house.');
-    else say(gauge, '', 'Free delivery unlocked', ' — grazie!');
+    if (mode === 'takeaway') say(gauge, 'Ritiro in ', appData.address, ': nessun costo, nessun minimo.');
+    else if (missing > 0) say(gauge, 'Aggiungi ', money(missing), ' e la consegna la offriamo noi.');
+    else say(gauge, '', 'Consegna gratuita sbloccata', '. Grazie!');
     $('[data-free-bar]', drawer).style.transform = `scaleX(${mode === 'takeaway' ? 1 : Math.min(1, subtotal / settings.freeFrom)})`;
 
     setText('[data-cart-subtotal]', money(subtotal));
-    setText('[data-fee-label]', mode === 'delivery' ? 'Delivery fee' : 'Take-away');
-    setText('[data-cart-fee]', fee ? money(fee) : 'Free');
+    setText('[data-fee-label]', mode === 'delivery' ? 'Consegna' : 'Asporto');
+    setText('[data-cart-fee]', fee ? money(fee) : 'Gratis');
     setText('[data-cart-grand]', money(total));
 }
 
@@ -147,9 +147,9 @@ function renderLines(drawer) {
             $('.cart-item__name', line).textContent = dish.name;
             $('.cart-item__unit', line).textContent = `${dish.category} · ${price(dish.price)}`;
             $('.qty', line).dataset.qty = id;
-            $('[data-dec]', line).setAttribute('aria-label', `Remove one ${dish.name}`);
-            $('[data-inc]', line).setAttribute('aria-label', `Add one ${dish.name}`);
-            $('[data-remove]', line).setAttribute('aria-label', `Remove ${dish.name} from your cart`);
+            $('[data-dec]', line).setAttribute('aria-label', `Diminuisci la quantità di ${dish.name}`);
+            $('[data-inc]', line).setAttribute('aria-label', `Aumenta la quantità di ${dish.name}`);
+            $('[data-remove]', line).setAttribute('aria-label', `Rimuovi ${dish.name} dal carrello`);
             list.append(line);
             if (animated) gsap.from(line, { height: 0, paddingTop: 0, paddingBottom: 0, autoAlpha: 0, duration: 0.5, ease: 'power3.out', clearProps: 'all' });
         }
@@ -180,18 +180,18 @@ function renderMode() {
     const copy = delivery
         ? {
             eta: `${from}–${to} min`,
-            etaLabel: 'Estimated delivery',
+            etaLabel: 'Consegna stimata',
             fee: price(settings.deliveryFee),
-            feeLabel: `Delivery fee · free over ${price(settings.freeFrom)}`,
-            zone: 'Within 5 km',
-            zoneLabel: 'Parma centre and Oltretorrente',
+            feeLabel: `Costo di consegna · gratis oltre ${price(settings.freeFrom)}`,
+            zone: 'Entro 5 km',
+            zoneLabel: 'Parma centro e Oltretorrente',
         }
         : {
             eta: `${from}–${to} min`,
-            etaLabel: 'Ready to collect',
-            fee: 'Free',
-            feeLabel: 'No fee, no minimum order',
-            zone: 'At the restaurant',
+            etaLabel: 'Pronto per il ritiro',
+            fee: 'Gratis',
+            feeLabel: 'Nessun costo, nessun ordine minimo',
+            zone: 'Al ristorante',
             zoneLabel: appData.address,
         };
 
@@ -270,13 +270,13 @@ function checkout(button) {
         const delivery = mode === 'delivery';
         const [from, to] = delivery ? settings.deliveryEta : settings.takeawayEta;
 
-        setText('[data-order="ref"]', `№ ${String(Math.floor(1000 + Math.random() * 9000))}`);
+        setText('[data-order="ref"]', `n. ${String(Math.floor(1000 + Math.random() * 9000))}`);
         setText('[data-order="text"]', delivery
-            ? `The kitchen is already at work. Your order will be at your door in about ${from}–${to} minutes.`
-            : `The kitchen is already at work. Your order will be ready to collect at ${appData.address} in ${from}–${to} minutes.`);
-        setText('[data-order="eta"]', delivery ? `Delivery in ${from}–${to} min` : `Ready in ${from}–${to} min`);
-        setText('[data-order="items"]', `${count} ${count === 1 ? 'item' : 'items'}`);
-        setText('[data-order="total"]', `${money(total)} · ${delivery ? 'pay on delivery' : 'pay at collection'}`);
+            ? `La cucina è già al lavoro. Il tuo ordine sarà da te in circa ${from}–${to} minuti.`
+            : `La cucina è già al lavoro. Il tuo ordine sarà pronto per il ritiro in ${appData.address} tra ${from}–${to} minuti.`);
+        setText('[data-order="eta"]', delivery ? `Consegna in ${from}–${to} min` : `Pronto in ${from}–${to} min`);
+        setText('[data-order="items"]', `${count} ${count === 1 ? 'articolo' : 'articoli'}`);
+        setText('[data-order="total"]', `${money(total)} · ${delivery ? 'paghi alla consegna' : 'paghi al ritiro'}`);
 
         cart.clear();
         save();
@@ -308,9 +308,9 @@ export function initCart() {
             change(dish.id, 1);
             flyToCart(photoNear(add));
             toast({
-                title: 'Added to your order',
+                title: 'Aggiunto all’ordine',
                 text: `${dish.name} · ${price(dish.price)}`,
-                action: { label: 'View cart', run: () => openOverlay('cart') },
+                action: { label: 'Carrello', run: () => openOverlay('cart') },
             });
             return;
         }

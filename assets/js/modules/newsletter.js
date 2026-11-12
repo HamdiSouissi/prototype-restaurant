@@ -21,11 +21,11 @@ export function initNewsletter() {
             event.preventDefault();
 
             if (!isEmail(input.value)) {
-                say('is-error', input.value.trim() ? 'This email address doesn’t look right.' : 'Please enter your email address.');
+                say('is-error', input.value.trim() ? 'Questo indirizzo email non sembra corretto.' : 'Inserisci il tuo indirizzo email.');
                 input.focus();
                 return;
             }
-            say('is-success', 'Grazie! The next letter will find its way to you.');
+            say('is-success', 'Grazie! La prossima lettera troverà la strada fino a te.');
             form.reset();
         });
 

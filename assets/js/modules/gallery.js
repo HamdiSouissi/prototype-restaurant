@@ -70,6 +70,7 @@ function initPhotoCarousel() {
         speed: 1000,
         grabCursor: true,
         navigation: { prevEl: '[data-gallery-prev]', nextEl: '[data-gallery-next]' },
+        a11y: announcements('Fotografie precedenti', 'Fotografie successive'),
         breakpoints: { 900: { spaceBetween: 26 } },
         on: {
             init: refresh,
@@ -85,6 +86,17 @@ function initPhotoCarousel() {
     });
 }
 
+/**
+ * What a carousel says to assistive technologies. Swiper labels its arrows itself
+ * (in English by default), so the Italian wording is handed over here.
+ */
+const announcements = (previous, next) => ({
+    prevSlideMessage: previous,
+    nextSlideMessage: next,
+    firstSlideMessage: 'Sei all’inizio',
+    lastSlideMessage: 'Sei alla fine',
+});
+
 /* ── Reviews carousel ─────────────────────────────────────────────────────── */
 
 function initReviewsCarousel() {
@@ -99,6 +111,7 @@ function initReviewsCarousel() {
         speed: 900,
         grabCursor: true,
         navigation: { prevEl: '[data-reviews-prev]', nextEl: '[data-reviews-next]' },
+        a11y: announcements('Recensioni precedenti', 'Recensioni successive'),
         breakpoints: { 900: { spaceBetween: 28 } },
     });
 }

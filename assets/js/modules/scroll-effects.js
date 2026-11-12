@@ -16,7 +16,7 @@
  */
 
 import { gsap, ScrollTrigger, SplitText } from './libs.js';
-import { $, $$, env, watchVisibility } from './utils.js';
+import { $, $$, decimal, env, watchVisibility } from './utils.js';
 
 const ENTER = 'top 88%'; // an element "enters" when its top passes 88% of the screen height
 
@@ -189,7 +189,7 @@ function initCounters() {
         if (Number.isNaN(end)) return;
 
         const counter = { value: 0 };
-        const write = () => { element.textContent = counter.value.toFixed(decimals); };
+        const write = () => { element.textContent = decimal(counter.value, decimals); };
         write();
 
         gsap.to(counter, {

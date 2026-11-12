@@ -1,7 +1,7 @@
 /**
  * Notifications: short messages rising from the bottom of the screen.
  *
- *   toast({ title: 'Added to your order', text: 'Tortelli d’erbetta', action: { label: 'View cart', run } })
+ *   toast({ title: 'Aggiunto all’ordine', text: 'Tortelli d’erbetta', action: { label: 'Carrello', run } })
  */
 
 import { gsap } from './libs.js';

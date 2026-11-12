@@ -6,7 +6,10 @@
 import { gsap } from './libs.js';
 import { $, $$, appData, env, toMinutes } from './utils.js';
 
-const DAY_NAMES = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+/** English names, only used to read the weekday returned by Intl for the restaurant's time zone. */
+const INTL_DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+/** Names shown to the visitor (0 = Sunday). */
+const DAY_NAMES = ['domenica', 'lunedì', 'martedì', 'mercoledì', 'giovedì', 'venerdì', 'sabato'];
 const TIME_ZONE = 'Europe/Rome'; // the restaurant's clock, wherever the visitor is
 
 export function initContact() {
@@ -23,7 +26,7 @@ function restaurantTime() {
             timeZone: TIME_ZONE, weekday: 'long', hour: '2-digit', minute: '2-digit', hourCycle: 'h23',
         }).formatToParts(new Date());
         const read = (type) => parts.find((part) => part.type === type).value;
-        return { day: DAY_NAMES.indexOf(read('weekday')), minutes: Number(read('hour')) * 60 + Number(read('minute')) };
+        return { day: INTL_DAYS.indexOf(read('weekday')), minutes: Number(read('hour')) * 60 + Number(read('minute')) };
     } catch (error) {
         const now = new Date(); // very old browsers: the visitor's own clock
         return { day: now.getDay(), minutes: now.getHours() * 60 + now.getMinutes() };
@@ -47,18 +50,18 @@ function initOpeningStatus() {
 
         let text;
         if (current) {
-            text = `Open now · until ${current[1]}`;
+            text = `Aperto ora · fino alle ${current[1]}`;
         } else {
             // Next service: later today, or the first one of the coming days
             const later = services.find(([open]) => toMinutes(open) > minutes);
             if (later) {
-                text = `Opens today at ${later[0]}`;
+                text = `Apre oggi alle ${later[0]}`;
             } else {
-                text = 'Closed';
+                text = 'Chiuso';
                 for (let ahead = 1; ahead <= 7; ahead += 1) {
                     const next = (day + ahead) % 7;
                     if ((hours[next] || []).length) {
-                        text = `Opens ${ahead === 1 ? 'tomorrow' : DAY_NAMES[next]} at ${hours[next][0][0]}`;
+                        text = `Apre ${ahead === 1 ? 'domani' : DAY_NAMES[next]} alle ${hours[next][0][0]}`;
                         break;
                     }
                 }

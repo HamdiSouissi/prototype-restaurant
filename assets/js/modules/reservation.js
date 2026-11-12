@@ -4,7 +4,7 @@
  * day, then shows the confirmation dialog. Nothing is stored or sent.
  */
 
-import { $, $$, appData, isEmail, replay, setText, toMinutes } from './utils.js';
+import { $, $$, appData, capitalise, isEmail, replay, setText, toMinutes } from './utils.js';
 import { openOverlay } from './overlay.js';
 import { confetti } from './confetti.js';
 
@@ -14,6 +14,9 @@ const BOOKING_WINDOW = 180;  // days ahead
 const LAST_SEATING = 30;     // minutes before the kitchen closes
 const NOTICE = 60;           // minutes needed before a table can be ready
 
+const LOCALE = 'it-IT';      // dates are written in Italian
+
+const guestsText = (count) => `${count} ${count === 1 ? 'ospite' : 'ospiti'}`;
 const pad = (number) => String(number).padStart(2, '0');
 const toISO = (date) => `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
 
@@ -97,36 +100,38 @@ export function initReservation() {
 
     const rules = {
         name(value) {
-            if (!value.trim()) return 'Please enter your name.';
-            if (value.trim().length < 2) return 'This name looks a little short.';
+            if (!value.trim()) return 'Inserisci il tuo nome.';
+            if (value.trim().length < 2) return 'Questo nome sembra un po’ corto.';
             return '';
         },
         phone(value) {
             const digits = value.replace(/\D/g, '');
-            if (!value.trim()) return 'Please enter a phone number.';
-            if (!/^\+?[\d\s().-]+$/.test(value.trim()) || digits.length < 7 || digits.length > 15) return 'This phone number doesn’t look right.';
+            if (!value.trim()) return 'Inserisci un numero di telefono.';
+            if (!/^\+?[\d\s().-]+$/.test(value.trim()) || digits.length < 7 || digits.length > 15) return 'Questo numero non sembra corretto.';
             return '';
         },
         email(value) {
-            if (!value.trim()) return 'Please enter your email address.';
-            if (!isEmail(value)) return 'This email address doesn’t look right.';
+            if (!value.trim()) return 'Inserisci il tuo indirizzo email.';
+            if (!isEmail(value)) return 'Questo indirizzo email non sembra corretto.';
             return '';
         },
         date(value) {
             const date = parseDate(value);
-            if (!value) return 'Please choose a date.';
-            if (!date || date < first) return 'Please choose today or a later date.';
-            if (date > last) return 'We take reservations up to six months ahead.';
+            if (!value) return 'Scegli una data.';
+            if (!date || date < first) return 'Scegli la data di oggi o una successiva.';
+            if (date > last) return 'Accettiamo prenotazioni fino a sei mesi di anticipo.';
             if (!(hours[date.getDay()] || []).length) {
-                return `We are closed on ${date.toLocaleDateString('en-GB', { weekday: 'long' })}s — please choose another day.`;
+                // "Il lunedì siamo chiusi" — Sunday is the only feminine day of the week
+                const weekday = date.toLocaleDateString(LOCALE, { weekday: 'long' });
+                return `${date.getDay() === 0 ? 'La' : 'Il'} ${weekday} siamo chiusi: scegli un altro giorno.`;
             }
             if (!$$('option:not([disabled])', fields.time).some((option) => option.value)) {
-                return 'No more tables on this day — please choose another one.';
+                return 'Nessun tavolo disponibile in questo giorno: scegline un altro.';
             }
             return '';
         },
         time(value) {
-            return value ? '' : 'Please choose a time.';
+            return value ? '' : 'Scegli un orario.';
         },
     };
 
@@ -175,7 +180,7 @@ export function initReservation() {
     const setGuests = (count) => {
         const value = Math.max(MIN_GUESTS, Math.min(MAX_GUESTS, count));
         guests.value = value;
-        guestsLabel.textContent = `${value} ${value === 1 ? 'guest' : 'guests'}`;
+        guestsLabel.textContent = guestsText(value);
         $('[data-guests-step="-1"]', form).disabled = value <= MIN_GUESTS;
         $('[data-guests-step="1"]', form).disabled = value >= MAX_GUESTS;
     };
@@ -209,6 +214,9 @@ export function initReservation() {
         const data = new FormData(form);
         const date = parseDate(data.get('date'));
         const count = Number(data.get('guests'));
+        // The seating is shown with its label ("Sala", "Terrazza"), not with its internal value
+        const seat = $('input[name="seating"]:checked', form);
+        const seating = seat ? seat.closest('label').textContent.trim() : '';
 
         submit.classList.add('is-loading');
         submit.setAttribute('aria-busy', 'true');
@@ -219,10 +227,10 @@ export function initReservation() {
             submit.removeAttribute('aria-busy');
 
             setText('[data-res-name]', `, ${String(data.get('name')).trim().split(/\s+/)[0]}`);
-            setText('[data-res="date"]', date.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long' }));
+            setText('[data-res="date"]', capitalise(date.toLocaleDateString(LOCALE, { weekday: 'long', day: 'numeric', month: 'long' })));
             setText('[data-res="time"]', data.get('time'));
-            setText('[data-res="guests"]', `${count} ${count === 1 ? 'guest' : 'guests'}`);
-            setText('[data-res="seating"]', data.get('seating'));
+            setText('[data-res="guests"]', guestsText(count));
+            setText('[data-res="seating"]', seating);
 
             openOverlay('reservation');
             confetti();
