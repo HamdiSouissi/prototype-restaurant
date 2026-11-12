@@ -18,7 +18,7 @@ The whole interface is written in **Italian**; this documentation and the code c
 | **Menu** | 30 dishes in six categories (Antipasti, Pasta, Pizza, Secondi, Dolci, Bevande) with animated filtering. Every dish can be added to the order. |
 | **Gallery** | Draggable carousel and a full-screen lightbox (keyboard and swipe). |
 | **Chef's Special** | The signature dish, with its own "add to order" button. |
-| **Reservation** | Form with name, phone, email, number of guests, date, time, seating (indoor room or terrace: *Sala / Terrazza*) and comments. Live validation, time slots that follow the opening hours of the chosen day, and a confirmation dialog: *"La tua richiesta di prenotazione è stata ricevuta."* |
+| **Reservation** | Form with name, phone, email, number of guests, date, time, seating (indoor room or terrace: *Sala / Terrazza*) and comments. Live validation, an Italian calendar that greys out the closing days, time slots that follow the opening hours of the chosen day, and a confirmation dialog: *"La tua richiesta di prenotazione è stata ricevuta."* |
 | **Delivery** | Delivery / take-away ordering: order board, cart drawer, quantities, delivery fee, free-delivery threshold, checkout confirmation. |
 | **Reviews, FAQ** | Review carousel, accordion. |
 | **Contact** | Address, phone, email, opening hours with an "open now" badge, stylised animated map. |
@@ -78,6 +78,7 @@ docs/preview.jpg          The picture above
 | `filters.js` | Category filters of the menu and of the order board |
 | `cart.js`, `toast.js`, `confetti.js` | Online order: cart, drawer, checkout, notifications |
 | `reservation.js` | Reservation form: validation, time slots, confirmation |
+| `datepicker.js` | Calendar of the date field: Italian, keyboard-operable, aware of the closing days |
 | `gallery.js`, `accordion.js`, `contact.js`, `newsletter.js` | Carousels and lightbox, FAQ, opening status and map, newsletter |
 
 ## Make it yours
@@ -112,7 +113,7 @@ meets: labels of the controls, image descriptions, page metadata, structured dat
 | Where | What |
 | --- | --- |
 | `index.php` | Everything printed in the page: the content arrays at the top, then the template |
-| `assets/js/modules/` | Messages written by the scripts: `reservation.js` (validation), `cart.js` (cart, checkout, notifications), `newsletter.js`, `contact.js` (opening badge), `gallery.js` (carousel announcements), `header.js` (navigation button) |
+| `assets/js/modules/` | Messages written by the scripts: `reservation.js` (validation), `cart.js` (cart, checkout, notifications), `newsletter.js`, `contact.js` (opening badge), `gallery.js` (carousel announcements), `header.js` (navigation button). `datepicker.js` holds no text: month and day names come from its `it-IT` locale |
 | `assets/css/sections.css` | The "Oggi" marker of the timetable (generated content) |
 | `assets/img/ui/map.svg` | Description of the map |
 
@@ -121,6 +122,11 @@ are produced by `number()` and `price()` in `index.php`, by `price()`, `money()`
 `assets/js/modules/utils.js`, and dates by the `it-IT` locale. To translate the site, change the texts in
 the four places above and these formats; the values used by the code (category slugs, `Indoor` /
 `Terrace`, `data-*` attributes) stay as they are.
+
+A native date field writes its format hint (`mm/dd/yyyy`, `gg/mm/aaaa`…) and its calendar in the language
+of the *browser*, whatever the language of the page. The reservation form therefore brings its own
+calendar (`datepicker.js`), which always speaks Italian. The native field stays in the form, hidden, and
+keeps the value; without JavaScript it is simply used as it is.
 
 ### Connecting a real back end
 

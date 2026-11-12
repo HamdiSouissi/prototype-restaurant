@@ -357,6 +357,23 @@ function opening_rows(array $hours): array
     return $rows;
 }
 
+/** Weekly closing days as written under the booking calendar: "Chiuso il lunedì". */
+function closing_note(array $hours): string
+{
+    $names  = [1 => 'il lunedì', 2 => 'il martedì', 3 => 'il mercoledì', 4 => 'il giovedì', 5 => 'il venerdì', 6 => 'il sabato', 0 => 'la domenica'];
+    $closed = [];
+    foreach ($names as $day => $name) {
+        if (empty($hours[$day])) {
+            $closed[] = $name;
+        }
+    }
+    if (!$closed) {
+        return '';
+    }
+    $last = array_pop($closed);
+    return 'Chiuso ' . ($closed ? implode(', ', $closed) . ' e ' : '') . $last;
+}
+
 /* ── Derived values ─────────────────────────────────────────────────────────── */
 
 $phoneHref = preg_replace('/[^+\d]/', '', $site['phone']);
@@ -968,10 +985,33 @@ $schema = [
                         </div>
 
                         <div class="field" data-field>
-                            <label class="field__label" for="res-date">Data</label>
-                            <div class="field__control">
+                            <label class="field__label" id="res-date-label" for="res-date">Data</label>
+                            <div class="field__control field__control--date" data-date-field>
                                 <?= icon('calendar-line') ?>
                                 <input class="field__input" id="res-date" name="date" type="date" min="<?= e($today) ?>" required>
+
+                                <!-- With JavaScript, this button and its calendar stand in for the native control,
+                                     which writes its format hint and its calendar in the language of the browser -->
+                                <button class="field__input field__date is-empty" id="res-date-toggle" type="button" hidden
+                                        aria-haspopup="dialog" aria-expanded="false" aria-controls="res-date-calendar"
+                                        aria-labelledby="res-date-label res-date-spoken" data-date-toggle>
+                                    <span class="field__date-text" aria-hidden="true" data-date-text>Scegli una data</span>
+                                    <span class="sr-only" id="res-date-spoken" data-date-spoken>Scegli una data</span>
+                                </button>
+                                <?= icon('arrow-down-s-line', 'field__chevron') ?>
+
+                                <div class="calendar" id="res-date-calendar" role="dialog" aria-label="Scegli una data" tabindex="-1" hidden data-calendar>
+                                    <div class="calendar__head">
+                                        <button class="stepper__btn" type="button" aria-label="Mese precedente" data-calendar-step="-1"><?= icon('arrow-left-line') ?></button>
+                                        <p class="calendar__title" id="res-date-month" aria-live="polite" data-calendar-title></p>
+                                        <button class="stepper__btn" type="button" aria-label="Mese successivo" data-calendar-step="1"><?= icon('arrow-right-line') ?></button>
+                                    </div>
+                                    <div class="calendar__week" aria-hidden="true" data-calendar-week></div>
+                                    <div class="calendar__days" role="group" aria-labelledby="res-date-month" data-calendar-days></div>
+                                    <?php if (closing_note($hours) !== ''): ?>
+                                    <p class="calendar__note"><?= e(closing_note($hours)) ?></p>
+                                    <?php endif; ?>
+                                </div>
                             </div>
                             <p class="field__error" data-error></p>
                         </div>

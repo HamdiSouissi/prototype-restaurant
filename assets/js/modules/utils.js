@@ -43,6 +43,17 @@ export const decimal = (value, digits = 0) => value.toFixed(digits).replace('.',
 /** "venerdì" → "Venerdì" */
 export const capitalise = (text) => text.charAt(0).toUpperCase() + text.slice(1);
 
+/** Date → "2026-11-14", the format of a date field */
+export const toISO = (date) => `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
+
+/** "2026-11-14" → Date at local midnight (null if unreadable) */
+export const parseDate = (value) => {
+    const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value || '');
+    if (!match) return null;
+    const date = new Date(Number(match[1]), Number(match[2]) - 1, Number(match[3]));
+    return Number.isNaN(date.getTime()) ? null : date;
+};
+
 /** "19:30" → 1170 (minutes since midnight) */
 export const toMinutes = (time) => {
     const [hours, minutes] = time.split(':').map(Number);

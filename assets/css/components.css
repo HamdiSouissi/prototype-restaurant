@@ -467,7 +467,7 @@ select.field__input option:disabled { color: #6A6863; }
     pointer-events: none;
 }
 
-/* Native date picker: dark theme, whole field opens the calendar */
+/* Native date picker (used without JavaScript): dark theme, whole field opens the calendar */
 input[type='date'].field__input { color-scheme: dark; }
 input[type='date'].field__input::-webkit-calendar-picker-indicator {
     position: absolute;
@@ -481,9 +481,147 @@ input[type='date'].field__input::-webkit-calendar-picker-indicator {
 }
 input[type='date'].field__input:invalid::-webkit-datetime-edit { color: #77756F; }
 
+/* Date button: with JavaScript it stands in for the native control, and opens the calendar below */
+.field__date {
+    display: flex;
+    align-items: center;
+    padding-right: 1.75rem; /* room for the chevron */
+    text-align: left;
+}
+.field__date-text {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.field__date.is-empty .field__date-text { color: #77756F; }
+.field__control--date .field__chevron { transition: transform var(--t-med) var(--ease-out); }
+.field__control--date:not(.has-calendar) .field__chevron { display: none; }
+.field__control--date.is-open { z-index: 5; }
+.field__control--date.is-open .field__chevron { transform: rotate(180deg); }
+
+/* Calendar */
+.calendar {
+    position: absolute;
+    top: calc(100% + 0.6rem);
+    left: -1px; /* on the border of the field */
+    z-index: 30;
+    width: 19.5rem;
+    padding: 1rem 1rem 0.9rem;
+    border: 1px solid var(--c-line-strong);
+    border-radius: var(--radius);
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.015)),
+        #161617;
+    box-shadow: var(--shadow-deep), 0 0 0 1px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    cursor: default;
+    opacity: 0;
+    transform: translateY(-0.5rem) scale(0.98);
+    transform-origin: 2rem 0;
+    transition: opacity 0.25s ease, transform 0.45s var(--ease-out);
+}
+/* Opens upwards when the section ends too soon below the field */
+.calendar--above {
+    top: auto;
+    bottom: calc(100% + 0.6rem);
+    transform: translateY(0.5rem) scale(0.98);
+    transform-origin: 2rem 100%;
+}
+.is-open > .calendar { opacity: 1; transform: none; }
+.calendar:focus-visible { outline: 0; }
+
+.calendar__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+}
+.calendar__head .stepper__btn { width: 2.25rem; height: 2.25rem; }
+.calendar__title {
+    color: var(--c-text);
+    font-family: var(--font-display);
+    font-size: clamp(1.15rem, 5.6vw, 1.4rem);
+    line-height: 1.2;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.calendar__week,
+.calendar__days {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    justify-items: center;
+}
+.calendar__week {
+    margin-bottom: 0.3rem;
+    color: #8A8882;
+    font-size: var(--fs-micro);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    line-height: 2;
+}
+.calendar__days { row-gap: 0.15rem; }
+.calendar__days.is-changing { animation: fade-in 0.4s ease; }
+
+/* Days, and the blank cells that keep six rows whatever the month */
+.calendar__day,
+.calendar__days > span {
+    width: min(100%, 2.25rem);
+    aspect-ratio: 1;
+}
+.calendar__day {
+    display: grid;
+    place-items: center;
+    border: 1px solid transparent;
+    border-radius: 50%;
+    color: var(--c-text);
+    font-size: 0.875rem;
+    font-variant-numeric: lining-nums tabular-nums;
+    line-height: 1;
+    transition: color var(--t-fast) ease, border-color var(--t-fast) ease, background-color var(--t-fast) ease;
+}
+.calendar__day:focus-visible { border-radius: 50%; outline-offset: 2px; }
+.calendar__day:hover {
+    border-color: rgba(var(--rgb-gold), 0.7);
+    background: rgba(var(--rgb-gold), 0.12);
+    color: var(--c-cream);
+}
+.calendar__day[aria-current='date'] { border-color: rgba(var(--rgb-gold), 0.45); color: var(--c-gold); }
+.calendar__day[aria-pressed='true'] {
+    border-color: transparent;
+    background: var(--gradient-gold);
+    box-shadow: 0 0.5rem 1rem -0.5rem rgba(var(--rgb-gold), 0.75);
+    color: #17130B;
+    font-weight: 700;
+}
+.calendar__day:disabled {
+    border-color: transparent;
+    color: #5C5A55;
+    cursor: default;
+    pointer-events: none;
+}
+.calendar__day:disabled[aria-current='date'] { border-color: rgba(255, 255, 255, 0.12); }
+
+.calendar__note {
+    margin-top: 0.7rem;
+    padding-top: 0.7rem;
+    border-top: 1px solid var(--c-line);
+    color: #8A8882;
+    font-size: 0.75rem;
+    line-height: 1.4;
+    text-align: center;
+}
+
+/* One column of fields (see .form__grid): on a phone the calendar takes the width of the form */
+@media (max-width: 620px) {
+    .calendar { right: -0.5rem; left: -0.5rem; width: auto; max-width: 22rem; padding-inline: 0.5rem; }
+}
+
 /* Guests stepper */
 .field__control--stepper { padding-right: 0.5rem; }
-.stepper__value { flex: 1; color: var(--c-text); font-size: 1rem; }
+.stepper__value { flex: 1; color: var(--c-text); font-size: 1rem; white-space: nowrap; }
 .stepper__btn {
     display: grid;
     place-items: center;

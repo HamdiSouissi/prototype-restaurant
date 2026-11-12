@@ -1,12 +1,13 @@
 /**
  * Reservation form — front-end simulation.
- * Checks the fields, adapts the time slots to the opening hours of the chosen
- * day, then shows the confirmation dialog. Nothing is stored or sent.
+ * Checks the fields, adapts the calendar and the time slots to the opening
+ * hours, then shows the confirmation dialog. Nothing is stored or sent.
  */
 
-import { $, $$, appData, capitalise, isEmail, replay, setText, toMinutes } from './utils.js';
+import { $, $$, appData, capitalise, isEmail, parseDate, replay, safely, setText, toISO, toMinutes } from './utils.js';
 import { openOverlay } from './overlay.js';
 import { confetti } from './confetti.js';
+import { initDatePicker } from './datepicker.js';
 
 const MIN_GUESTS = 1;
 const MAX_GUESTS = 8;
@@ -17,16 +18,9 @@ const NOTICE = 60;           // minutes needed before a table can be ready
 const LOCALE = 'it-IT';      // dates are written in Italian
 
 const guestsText = (count) => `${count} ${count === 1 ? 'ospite' : 'ospiti'}`;
-const pad = (number) => String(number).padStart(2, '0');
-const toISO = (date) => `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
 
-/** "2026-11-14" → Date at local midnight (null if unreadable). */
-function parseDate(value) {
-    const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value);
-    if (!match) return null;
-    const date = new Date(Number(match[1]), Number(match[2]) - 1, Number(match[3]));
-    return Number.isNaN(date.getTime()) ? null : date;
-}
+/** The control the visitor uses for a field: the calendar button stands in for the native date input. */
+const face = (input) => document.getElementById(input.dataset.face || '') || input;
 
 function today() {
     const now = new Date();
@@ -96,6 +90,11 @@ export function initReservation() {
         return available;
     };
 
+    // The calendar greys out the days without any bookable time: closing days, today once it is too late.
+    // Should it fail to start, the native date input simply stays in place.
+    const slots = $$('option', fields.time).map((option) => option.value).filter(Boolean);
+    safely('calendar', () => initDatePicker(fields.date, (date) => !slots.some((slot) => slotAvailable(slot, date))));
+
     /* ── Validation ───────────────────────────────────────────────────────── */
 
     const rules = {
@@ -145,9 +144,9 @@ export function initReservation() {
         if (!error.id) error.id = `${input.id}-error`;
         error.textContent = message;
         field.classList.toggle('is-invalid', Boolean(message));
-        input.setAttribute('aria-invalid', String(Boolean(message)));
-        if (message) input.setAttribute('aria-describedby', error.id);
-        else input.removeAttribute('aria-describedby');
+        face(input).setAttribute('aria-invalid', String(Boolean(message)));
+        if (message) face(input).setAttribute('aria-describedby', error.id);
+        else face(input).removeAttribute('aria-describedby');
 
         return !message;
     };
@@ -155,8 +154,8 @@ export function initReservation() {
     const clear = () => {
         $$('[data-field]', form).forEach((field) => field.classList.remove('is-invalid'));
         Object.values(fields).forEach((input) => {
-            input.removeAttribute('aria-invalid');
-            input.removeAttribute('aria-describedby');
+            face(input).removeAttribute('aria-invalid');
+            face(input).removeAttribute('aria-describedby');
         });
     };
 
@@ -207,7 +206,7 @@ export function initReservation() {
         const invalid = Object.keys(fields).filter((name) => !validate(name));
         if (invalid.length) {
             replay(form, 'is-shaking');
-            fields[invalid[0]].focus();
+            face(fields[invalid[0]]).focus();
             return;
         }
 
